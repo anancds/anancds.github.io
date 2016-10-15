@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>一些系统相关问题的定位 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="系统相关I/O性能
+查看I/O：
+iostat -xz 1
+
+
+网络监测
+查看网络sar(System Activity Reporter)
+sar –n DEV 1
+
+
+如果“rxkB/s”和“txkB/s”两种相加超过100MB的话，说明网络已经接近饱和了。
+内存相关
+查看内存占用情况：
+free -g
+
+
+CPU
+查看CPU负载：
+mpstat -P ALL 2
+
+查看磁盘IO情况及CPU负">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一些系统相关问题的定位">
+<meta property="og:url" content="http://yoursite.com/2016/09/02/system/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="系统相关I/O性能
+查看I/O：
+iostat -xz 1
+
+
+网络监测
+查看网络sar(System Activity Reporter)
+sar –n DEV 1
+
+
+如果“rxkB/s”和“txkB/s”两种相加超过100MB的话，说明网络已经接近饱和了。
+内存相关
+查看内存占用情况：
+free -g
+
+
+CPU
+查看CPU负载：
+mpstat -P ALL 2
+
+查看磁盘IO情况及CPU负">
+<meta property="og:updated_time" content="2016-10-15T02:19:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一些系统相关问题的定位">
+<meta name="twitter:description" content="系统相关I/O性能
+查看I/O：
+iostat -xz 1
+
+
+网络监测
+查看网络sar(System Activity Reporter)
+sar –n DEV 1
+
+
+如果“rxkB/s”和“txkB/s”两种相加超过100MB的话，说明网络已经接近饱和了。
+内存相关
+查看内存占用情况：
+free -g
+
+
+CPU
+查看CPU负载：
+mpstat -P ALL 2
+
+查看磁盘IO情况及CPU负">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-system" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/09/02/system/" class="article-date">
+  <time datetime="2016-09-02T01:32:59.000Z" itemprop="datePublished">2016-09-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      一些系统相关问题的定位
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="系统相关"><a href="#系统相关" class="headerlink" title="系统相关"></a>系统相关</h1><h2 id="I-O性能"><a href="#I-O性能" class="headerlink" title="I/O性能"></a>I/O性能</h2><ul>
+<li><p>查看I/O：</p>
+<pre><code>iostat -xz 1
+</code></pre></li>
+</ul>
+<h2 id="网络监测"><a href="#网络监测" class="headerlink" title="网络监测"></a>网络监测</h2><ul>
+<li><p>查看网络sar(System Activity Reporter)</p>
+<pre><code>sar –n DEV 1
+</code></pre></li>
+</ul>
+<p>如果“rxkB/s”和“txkB/s”两种相加超过100MB的话，说明网络已经接近饱和了。</p>
+<h2 id="内存相关"><a href="#内存相关" class="headerlink" title="内存相关"></a>内存相关</h2><ul>
+<li><p>查看内存占用情况：</p>
+<pre><code>free -g
+</code></pre></li>
+</ul>
+<h2 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h2><ul>
+<li><p>查看CPU负载：</p>
+<pre><code>mpstat -P ALL 2
+</code></pre></li>
+<li><p>查看磁盘IO情况及CPU负载：</p>
+<pre><code>vmstat 2
+</code></pre></li>
+</ul>
+<h2 id="测试上下文切换次数"><a href="#测试上下文切换次数" class="headerlink" title="测试上下文切换次数"></a>测试上下文切换次数</h2><pre><code>vmstat 1
+</code></pre><p>其中CS(Content Switch)表示上下文切换次数。如果是java程序，那么可以dump线程的一些信息来查看上下午切换。</p>
+<pre><code>jstat 777 &gt; /home/cds
+grep java.lang.Thread.State /home/cds | awk &apos;{print $2$3$4$5}&apos; | sort | uniq -c
+</code></pre><h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2><ul>
+<li><p>查看进程树：</p>
+<pre><code>ps axf
+</code></pre></li>
+<li><p>查看进程详细信息：</p>
+<pre><code>ps aux
+</code></pre></li>
+<li><p>查看进程：</p>
+<pre><code>top
+</code></pre></li>
+</ul>
+<h2 id="文件相关"><a href="#文件相关" class="headerlink" title="文件相关"></a>文件相关</h2><ul>
+<li><p>查看系统允许打开的最大文件数：</p>
+<pre><code>cat /proc/sys/fs/file-max
+</code></pre></li>
+<li><p>查看每个用户允许打开的最大文件数：ulimit -a，当然如果要修改这个值，需要修改/etc/security/limits.conf这个配置文件。</p>
+</li>
+<li><p>查出每个进程占用的文件数量：</p>
+<pre><code>lsof -p 12 | wc -l
+</code></pre></li>
+<li><p>总共打开文件数：</p>
+<pre><code>lsof -n | wc -l
+</code></pre></li>
+<li><p>显示使用fd为4的进程：</p>
+<pre><code>lsof -d 4
+</code></pre></li>
+<li><p>显示开启文件abc.txt的进程：</p>
+<pre><code>lsof abc.txt
+</code></pre></li>
+<li><p>显示使用22端口的进程：</p>
+<pre><code>lsof -i:22
+</code></pre></li>
+<li><p>显示使用tcp协议的22端口的进程：</p>
+<pre><code>lsof -i tcp:22
+</code></pre></li>
+<li><p>网络相关的文件数：</p>
+<pre><code>lsof -n -i  | wc -l
+</code></pre></li>
+</ul>
+<h2 id="网络连接相关"><a href="#网络连接相关" class="headerlink" title="网络连接相关"></a>网络连接相关</h2><ul>
+<li><p>网络连接数：</p>
+<pre><code>netstat -ant | wc -l
+</code></pre></li>
+<li><p>端口号是80的网络连接数：</p>
+<pre><code>netstat -ant | grep &quot;:80&quot; | wc -l
+</code></pre></li>
+<li><p>查看端口号是2181的各种状态的连接数：</p>
+<pre><code>netstat -ant | grep &quot;:2181&quot; | awk &apos;{print $6}&apos; | sort | uniq -c  | sort -nr
+</code></pre></li>
+<li><p>所有的网络连接数，按状态排序：</p>
+<pre><code>netstat -n | awk &apos;/^tcp/ {++S[$NF]} END {for(a in S) print S[a],a}&apos; | sort -nr
+</code></pre></li>
+<li><p>所有打开文件数，按进程PID排序：</p>
+<pre><code>lsof -n | awk &apos;{print $2}&apos; | sort -n | uniq -c | sort -nr | more
+</code></pre></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/09/02/system/" data-id="ciuaksbvv00044don9a2gr45t" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/System/">System</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/09/13/javaGC/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          GC调优
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/07/22/GPU-1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">GPU学习</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/GPU/">GPU</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPU/">GPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/GPU/" style="font-size: 10px;">GPU</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/java/" style="font-size: 20px;">java</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/10/01/hashmap/">hashmap</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/01/post/">post</a>
+          </li>
+        
+          <li>
+            <a href="/2016/09/13/javaGC/">GC调优</a>
+          </li>
+        
+          <li>
+            <a href="/2016/09/02/system/">一些系统相关问题的定位</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/22/GPU-1/">GPU学习</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

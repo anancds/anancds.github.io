@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>GC调优 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="GC调优因为应用程序跑在jetty下，所以先说下启动jetty的jvm参数。
+java -XX:+CMSParallelRemarkEnabled -XX:+CMSScavengeBeforeRemark -XX:+ParallelRefProcEnabled -XX:+UseCMSInitiatingOccupancyOnly -XX:+UseConcMarkSweepGC -XX:CMSIni">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GC调优">
+<meta property="og:url" content="http://yoursite.com/2016/09/13/javaGC/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="GC调优因为应用程序跑在jetty下，所以先说下启动jetty的jvm参数。
+java -XX:+CMSParallelRemarkEnabled -XX:+CMSScavengeBeforeRemark -XX:+ParallelRefProcEnabled -XX:+UseCMSInitiatingOccupancyOnly -XX:+UseConcMarkSweepGC -XX:CMSIni">
+<meta property="og:updated_time" content="2016-10-15T02:19:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="GC调优">
+<meta name="twitter:description" content="GC调优因为应用程序跑在jetty下，所以先说下启动jetty的jvm参数。
+java -XX:+CMSParallelRemarkEnabled -XX:+CMSScavengeBeforeRemark -XX:+ParallelRefProcEnabled -XX:+UseCMSInitiatingOccupancyOnly -XX:+UseConcMarkSweepGC -XX:CMSIni">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-javaGC" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/09/13/javaGC/" class="article-date">
+  <time datetime="2016-09-13T03:12:59.000Z" itemprop="datePublished">2016-09-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      GC调优
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="GC调优"><a href="#GC调优" class="headerlink" title="GC调优"></a>GC调优</h1><p>因为应用程序跑在jetty下，所以先说下启动jetty的jvm参数。</p>
+<pre><code>java -XX:+CMSParallelRemarkEnabled -XX:+CMSScavengeBeforeRemark -XX:+ParallelRefProcEnabled -XX:+UseCMSInitiatingOccupancyOnly -XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFraction=50 -XX:CMSMaxAbortablePrecleanTime=6000 -XX:ConcGCThreads=4 -XX:MaxTenuringThreshold=8 -XX:NewRatio=3 -XX:ParallelGCThreads=4 -XX:PretenureSizeThreshold=64m -XX:SurvivorRatio=4 -XX:TargetSurvivorRatio=90 -Xmx75600m -Xms75600m -XX:ParallelGCThreads=4 -XX:+UseParNewGC -XX:+UseCompressedOops -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=8999 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -jar start.jar jetty.http.port=80
+</code></pre><h2 id="GC目的"><a href="#GC目的" class="headerlink" title="GC目的"></a>GC目的</h2><p><em>GC的优化一般是最后一项任务</em>。</p>
+<p>进行GC优化的目的一般有两个：</p>
+<ul>
+<li>将转移到老年代的对象数量降低到最少。</li>
+<li>减少Full GC的时间。</li>
+</ul>
+<h2 id="GC优化需要考虑的Java参数"><a href="#GC优化需要考虑的Java参数" class="headerlink" title="GC优化需要考虑的Java参数"></a>GC优化需要考虑的Java参数</h2><table>
+<thead>
+<tr>
+<th>定义</th>
+<th>参数</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>堆内存空间</td>
+<td>-Xms</td>
+<td>Heap area size when starting JVM。启动JVM时的堆内存空间。</td>
+</tr>
+<tr>
+<td></td>
+<td>-Xmx</td>
+<td>Maximum heap area size。堆内存最大限制。</td>
+</tr>
+<tr>
+<td>新生代空间</td>
+<td>-XX:NewRatio</td>
+<td>Ratio of New area and Old area。新生代和老年代的占比。</td>
+</tr>
+<tr>
+<td></td>
+<td>-XX:NewSize</td>
+<td>New area size。新生代空间</td>
+</tr>
+<tr>
+<td></td>
+<td>-XX:SurvivorRatio</td>
+<td>Ratio ofEdenarea and Survivor area。伊甸园空间和幸存者空间的占比</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>GC分类</th>
+<th>参数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Serial GC</td>
+<td>-XX:+UseSerialGC</td>
+</tr>
+<tr>
+<td>Parallel GC</td>
+<td>-XX:+UseParallelGC -XX:ParallelGCThreads=value</td>
+</tr>
+<tr>
+<td>Parallel Compacting GC</td>
+<td>-XX:+UseParallelOldGC</td>
+</tr>
+<tr>
+<td>CMS GC</td>
+<td>-XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:+CMSParallelRemarkEnabled -XX:CMSInitiatingOccupancyFraction=value -XX:+UseCMSInitiatingOccupancyOnly</td>
+</tr>
+<tr>
+<td>G1</td>
+<td>XX:+UnlockExperimentalVMOptions -XX:+UseG1GC</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>说明：如果NewRatio为2，意味着新生代老年代之比为1:2，因此该值越大，老年代空间越大，新生代空间越小。NewRatio参数会显著地影响整个GC的性能。如果新生代空间很小，会用更多的对象被转移到老年代空间，这样导致频繁的Full GC，增加暂停时间。</li>
+</ul>
+<h2 id="GC优化过程"><a href="#GC优化过程" class="headerlink" title="GC优化过程"></a>GC优化过程</h2><h3 id="监控GC状态"><a href="#监控GC状态" class="headerlink" title="监控GC状态"></a>监控GC状态</h3><ul>
+<li><p>打印GC日志是很好的方式，因为记录GC日志并不会特别地影响java程序性能。</p>
+<pre><code>-Xloggc:$CATALINA_BASE/logs/gc.log -XX:+PrintGCDetails -XX:+PrintGCDateStamps。
+</code></pre></li>
+<li><p>监控jetty，可以通过jconsole来监控。</p>
+</li>
+<li><p>通过jstat来监控，比如：jstat -gc <vimid> 1000</vimid></p>
+</li>
+</ul>
+<p>一般有两个重要指标：</p>
+<ul>
+<li><p>新生代GC平均时间：YGCT/YGC</p>
+</li>
+<li><p>老年代GC平均时间：FGCT/FGC</p>
+</li>
+</ul>
+<p>关于jstat参数的说明如下：</p>
+<table>
+<thead>
+<tr>
+<th>列</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S0C</td>
+<td>输出Survivor0空间的大小。单位KB。</td>
+</tr>
+<tr>
+<td>S1C</td>
+<td>输出Survivor1空间的大小。单位KB。</td>
+</tr>
+<tr>
+<td>S0U</td>
+<td>输出Survivor0已用空间的大小。单位KB。</td>
+</tr>
+<tr>
+<td>S1U</td>
+<td>输出Survivor1已用空间的大小。单位KB。</td>
+</tr>
+<tr>
+<td>EC</td>
+<td>输出Eden空间的大小。单位KB。</td>
+</tr>
+<tr>
+<td>EU</td>
+<td>输出Eden已用空间的大小。单位KB。</td>
+</tr>
+<tr>
+<td>OC</td>
+<td>输出老年代空间的大小。单位KB。</td>
+</tr>
+<tr>
+<td>OU</td>
+<td>输出老年代已用空间的大小。单位KB。</td>
+</tr>
+<tr>
+<td>PC</td>
+<td>输出持久代空间的大小。单位KB。</td>
+</tr>
+<tr>
+<td>PU</td>
+<td>输出持久代已用空间的大小。单位KB。</td>
+</tr>
+<tr>
+<td>YGC</td>
+<td>新生代空间GC时间发生的次数。</td>
+</tr>
+<tr>
+<td>YGCT</td>
+<td>新生代GC处理花费的时间。</td>
+</tr>
+<tr>
+<td>FGC</td>
+<td>full GC发生的次数。</td>
+</tr>
+<tr>
+<td>FGCT</td>
+<td>full GC操作花费的时间</td>
+</tr>
+<tr>
+<td>GCT</td>
+<td>GC操作花费的总时间。</td>
+</tr>
+<tr>
+<td>NGCMN</td>
+<td>新生代最小空间容量，单位KB。</td>
+</tr>
+<tr>
+<td>NGCMX</td>
+<td>新生代最大空间容量，单位KB。</td>
+</tr>
+<tr>
+<td>NGC</td>
+<td>新生代当前空间容量，单位KB。</td>
+</tr>
+<tr>
+<td>OGCMN</td>
+<td>老年代最小空间容量，单位KB。</td>
+</tr>
+<tr>
+<td>OGCMX</td>
+<td>老年代最大空间容量，单位KB。</td>
+</tr>
+<tr>
+<td>OGC</td>
+<td>老年代当前空间容量制，单位KB。</td>
+</tr>
+<tr>
+<td>PGCMN</td>
+<td>持久代最小空间容量，单位KB。</td>
+</tr>
+<tr>
+<td>PGCMX</td>
+<td>持久代最大空间容量，单位KB。</td>
+</tr>
+<tr>
+<td>PGC</td>
+<td>持久代当前空间容量，单位KB。</td>
+</tr>
+<tr>
+<td>PC</td>
+<td>持久代当前空间大小，单位KB</td>
+</tr>
+<tr>
+<td>PU</td>
+<td>持久代当前已用空间大小，单位KB</td>
+</tr>
+<tr>
+<td>LGCC</td>
+<td>最后一次GC发生的原因</td>
+</tr>
+<tr>
+<td>GCC</td>
+<td>当前GC发生的原因</td>
+</tr>
+<tr>
+<td>TT</td>
+<td>老年化阈值。被移动到老年代之前，在新生代空存活的次数。</td>
+</tr>
+<tr>
+<td>MTT</td>
+<td>最大老年化阈值。被移动到老年代之前，在新生代空存活的次数。</td>
+</tr>
+<tr>
+<td>DSS</td>
+<td>幸存者区所需空间大小，单位KB。</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>-verbosegc</li>
+</ul>
+<p>-verbosegc的可用参数如下：</p>
+<ul>
+<li>-XX:+PrintGCDetails</li>
+<li>-XX:+PrintGCTimeStamps</li>
+<li>-XX:+PrintHeapAtGC</li>
+<li>-XX:+PrintGCDateStamps</li>
+</ul>
+<p>GC的格式如下：</p>
+<pre><code>[GC [&lt;collector&gt;: &lt;starting occupancy1&gt; -&gt; &lt;ending occupancy1&gt;, &lt;pause time1&gt; secs] &lt;starting occupancy3&gt; -&gt; &lt;ending occupancy3&gt;, &lt;pause time3&gt; secs]
+</code></pre><table>
+<thead>
+<tr>
+<th>collector</th>
+<th>minor gc使用的收集器的名字</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>starting occupancy1</td>
+<td>GC执行前新生代空间大小。</td>
+</tr>
+<tr>
+<td>ending occupancy1</td>
+<td>GC执行后新生代空间大小。</td>
+</tr>
+<tr>
+<td>pause time1</td>
+<td>因为执行minor GC，Java应用暂停的时间。</td>
+</tr>
+<tr>
+<td>starting occupancy3</td>
+<td>GC执行前堆区域总大小</td>
+</tr>
+<tr>
+<td>ending occupancy3</td>
+<td>GC执行后堆区域总大小</td>
+</tr>
+<tr>
+<td>pause time3</td>
+<td>Java应用由于执行堆空间GC（包括major GC）而停止的时间。</td>
+</tr>
+</tbody>
+</table>
+<p>真实环境下的例子如下：</p>
+<pre><code>[GC (CMS Final Remark) [ParNew: 9496241K-&gt;543569K(12902400K), 0.5521501 secs] 9496241K-&gt;543569K(74833920K), 0.5522263 secs] [Times: user=2.09 sys=0.19, real=0.56 secs]
+</code></pre><p>别的监控工具还有(Java) VisualVM  + Visual GC和<a href="https://h20392.www2.hpe.com/portal/swdepot/displayProductInfo.do?productNumber=HPJMETER" target="_blank" rel="external">HPJMeter</a>。</p>
+<h3 id="分析结果"><a href="#分析结果" class="headerlink" title="分析结果"></a>分析结果</h3><p>如果结果表明执行GC的时间只有0.1-0.3s，那么就没有必要浪费时间来进行优化，如果是1s以上，那么就非常有必要了。</p>
+<p>如果需要GC优化，那么就要调整GC类型和内存空间了。</p>
+<p>一般内存空间与GC执行次数和GC执行时间的关系如下：</p>
+<ul>
+<li>如果是大内存空间，那么就会减少GC执行次数并且增加GC执行时间。</li>
+<li>如果是小内存空间，那么就会减小GC执行时间并且增加GC执行次数。</li>
+</ul>
+<p>一般优化GC比较重要的参数有堆内存大小，XX:NewRatio的大小，使用的GC类型。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/09/13/javaGC/" data-id="ciuaksbvq00014dongcdupd8f" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/10/01/post/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          post
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/09/02/system/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">一些系统相关问题的定位</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/GPU/">GPU</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPU/">GPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/GPU/" style="font-size: 10px;">GPU</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/java/" style="font-size: 20px;">java</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/10/01/hashmap/">hashmap</a>
+          </li>
+        
+          <li>
+            <a href="/2016/10/01/post/">post</a>
+          </li>
+        
+          <li>
+            <a href="/2016/09/13/javaGC/">GC调优</a>
+          </li>
+        
+          <li>
+            <a href="/2016/09/02/system/">一些系统相关问题的定位</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/22/GPU-1/">GPU学习</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
