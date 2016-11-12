@@ -13,7 +13,7 @@ java -XX:+CMSParallelRemarkEnabled -XX:+CMSScavengeBeforeRemark -XX:+ParallelRef
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="GC调优因为应用程序跑在jetty下，所以先说下启动jetty的jvm参数。
 java -XX:+CMSParallelRemarkEnabled -XX:+CMSScavengeBeforeRemark -XX:+ParallelRefProcEnabled -XX:+UseCMSInitiatingOccupancyOnly -XX:+UseConcMarkSweepGC -XX:CMSIni">
-<meta property="og:updated_time" content="2016-10-15T02:19:23.000Z">
+<meta property="og:updated_time" content="2016-11-12T13:32:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GC调优">
 <meta name="twitter:description" content="GC调优因为应用程序跑在jetty下，所以先说下启动jetty的jvm参数。
@@ -55,9 +55,9 @@ java -XX:+CMSParallelRemarkEnabled -XX:+CMSScavengeBeforeRemark -XX:+ParallelRef
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -88,9 +88,10 @@ java -XX:+CMSParallelRemarkEnabled -XX:+CMSScavengeBeforeRemark -XX:+ParallelRef
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="GC调优"><a href="#GC调优" class="headerlink" title="GC调优"></a>GC调优</h1><p>因为应用程序跑在jetty下，所以先说下启动jetty的jvm参数。</p>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css"><h1 id="GC调优"><a href="#GC调优" class="headerlink" title="GC调优"></a>GC调优</h1><p>因为应用程序跑在jetty下，所以先说下启动jetty的jvm参数。</p>
 <pre><code>java -XX:+CMSParallelRemarkEnabled -XX:+CMSScavengeBeforeRemark -XX:+ParallelRefProcEnabled -XX:+UseCMSInitiatingOccupancyOnly -XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFraction=50 -XX:CMSMaxAbortablePrecleanTime=6000 -XX:ConcGCThreads=4 -XX:MaxTenuringThreshold=8 -XX:NewRatio=3 -XX:ParallelGCThreads=4 -XX:PretenureSizeThreshold=64m -XX:SurvivorRatio=4 -XX:TargetSurvivorRatio=90 -Xmx75600m -Xms75600m -XX:ParallelGCThreads=4 -XX:+UseParNewGC -XX:+UseCompressedOops -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=8999 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -jar start.jar jetty.http.port=80
-</code></pre><h2 id="GC目的"><a href="#GC目的" class="headerlink" title="GC目的"></a>GC目的</h2><p><em>GC的优化一般是最后一项任务</em>。</p>
+</code></pre><a id="more"></a>
+<h2 id="GC目的"><a href="#GC目的" class="headerlink" title="GC目的"></a>GC目的</h2><p><em>GC的优化一般是最后一项任务</em>。</p>
 <p>进行GC优化的目的一般有两个：</p>
 <ul>
 <li>将转移到老年代的对象数量降低到最少。</li>
@@ -377,7 +378,7 @@ java -XX:+CMSParallelRemarkEnabled -XX:+CMSScavengeBeforeRemark -XX:+ParallelRef
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/09/13/javaGC/" data-id="ciuakuqmp00026zonlpos2d3n" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/09/13/javaGC/" data-id="civf9es5s0001f6onccymqsn0" class="article-share-link">Partager</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
@@ -389,7 +390,7 @@ java -XX:+CMSParallelRemarkEnabled -XX:+CMSScavengeBeforeRemark -XX:+ParallelRef
 <nav id="article-nav">
   
     <a href="/2016/10/01/hashmap/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
+      <strong class="article-nav-caption">Récent</strong>
       <div class="article-nav-title">
         
           hashmap
@@ -399,7 +400,7 @@ java -XX:+CMSParallelRemarkEnabled -XX:+CMSScavengeBeforeRemark -XX:+ParallelRef
   
   
     <a href="/2016/09/02/system/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
+      <strong class="article-nav-caption">Ancien</strong>
       <div class="article-nav-title">一些系统相关问题的定位</div>
     </a>
   
@@ -414,7 +415,7 @@ java -XX:+CMSParallelRemarkEnabled -XX:+CMSScavengeBeforeRemark -XX:+ParallelRef
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
+    <h3 class="widget-title">Catégories</h3>
     <div class="widget">
       <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/GPU/">GPU</a></li></ul>
     </div>
@@ -424,7 +425,7 @@ java -XX:+CMSParallelRemarkEnabled -XX:+CMSScavengeBeforeRemark -XX:+ParallelRef
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
+    <h3 class="widget-title">Mot-clés</h3>
     <div class="widget">
       <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPU/">GPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li></ul>
     </div>
@@ -434,9 +435,9 @@ java -XX:+CMSParallelRemarkEnabled -XX:+CMSScavengeBeforeRemark -XX:+ParallelRef
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
+    <h3 class="widget-title">Nuage de mot-clés</h3>
     <div class="widget tagcloud">
-      <a href="/tags/GPU/" style="font-size: 10px;">GPU</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/java/" style="font-size: 10px;">java</a>
+      <a href="/tags/GPU/" style="font-size: 10px;">GPU</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/java/" style="font-size: 20px;">java</a>
     </div>
   </div>
 
@@ -453,9 +454,13 @@ java -XX:+CMSParallelRemarkEnabled -XX:+CMSScavengeBeforeRemark -XX:+ParallelRef
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
+    <h3 class="widget-title">Articles récents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2016/10/15/volatile/">volatile应用场景</a>
+          </li>
         
           <li>
             <a href="/2016/10/01/hashmap/">hashmap</a>
@@ -486,7 +491,7 @@ java -XX:+CMSParallelRemarkEnabled -XX:+CMSScavengeBeforeRemark -XX:+ParallelRef
   <div class="outer">
     <div id="footer-info" class="inner">
       &copy; 2016 John Doe<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>

@@ -23,7 +23,7 @@
 <meta property="og:image" content="http://docs.nvidia.com/cuda/cuda-c-programming-guide/graphics/grid-of-thread-blocks.png">
 <meta property="og:image" content="http://docs.nvidia.com/cuda/cuda-c-programming-guide/graphics/memory-hierarchy.png">
 <meta property="og:image" content="http://docs.nvidia.com/cuda/cuda-c-programming-guide/graphics/heterogeneous-programming.png">
-<meta property="og:updated_time" content="2016-10-15T02:19:23.000Z">
+<meta property="og:updated_time" content="2016-11-12T13:32:40.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GPU学习">
 <meta name="twitter:description" content="实验环境：系统是Ubuntu，cuda的版本是7.5。
@@ -67,9 +67,9 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -104,9 +104,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>实验环境：<br>系统是Ubuntu，cuda的版本是7.5。</p>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css"><p>实验环境：<br>系统是Ubuntu，cuda的版本是7.5。</p>
 <p>具体怎么搭建还是参考官方文档<a href="http://docs.nvidia.com/cuda/index.html#axzz4DzlUApap" target="_blank" rel="external">documents</a></p>
 <h2 id="1、Introduction"><a href="#1、Introduction" class="headerlink" title="1、Introduction"></a>1、Introduction</h2><h3 id="1、1-From-Graphics-Processing-to-General-Purpose-Parallel-Computing"><a href="#1、1-From-Graphics-Processing-to-General-Purpose-Parallel-Computing" class="headerlink" title="1、1 From Graphics Processing to General Purpose Parallel Computing"></a>1、1 From Graphics Processing to General Purpose Parallel Computing</h3><p>由于市场对实时性、3D高清图像的无限制需求的驱动，可编程的GPU(Graphic Processor Unit)已经发展成为一个高度并行的、多线程、多core的处理器。拥有大计算功率和高网络带宽。如下图所示：</p>
+<a id="more"></a>
 <p>图1对比了cpu和GPU每秒的浮点运算，图2对比了cpu和GPU的网络带宽。</p>
 <p><img src="http://docs.nvidia.com/cuda/cuda-c-programming-guide/graphics/floating-point-operations-per-second.png" alt="Figure 1"></p>
 <p><img src="http://docs.nvidia.com/cuda/cuda-c-programming-guide/graphics/memory-bandwidth.png" alt="Figure 2"></p>
@@ -222,7 +223,7 @@ __global__ void MatAdd(float A[N][N], float B[N][N],
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/07/22/GPU-1/" data-id="ciuakuqmm00016zonyz6iz8ka" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/07/22/GPU-1/" data-id="civf9es5o0000f6onzq4ssi39" class="article-share-link">Partager</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GPU/">GPU</a></li></ul>
@@ -234,7 +235,7 @@ __global__ void MatAdd(float A[N][N], float B[N][N],
 <nav id="article-nav">
   
     <a href="/2016/09/02/system/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
+      <strong class="article-nav-caption">Récent</strong>
       <div class="article-nav-title">
         
           一些系统相关问题的定位
@@ -254,7 +255,7 @@ __global__ void MatAdd(float A[N][N], float B[N][N],
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
+    <h3 class="widget-title">Catégories</h3>
     <div class="widget">
       <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/GPU/">GPU</a></li></ul>
     </div>
@@ -264,7 +265,7 @@ __global__ void MatAdd(float A[N][N], float B[N][N],
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
+    <h3 class="widget-title">Mot-clés</h3>
     <div class="widget">
       <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPU/">GPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li></ul>
     </div>
@@ -274,9 +275,9 @@ __global__ void MatAdd(float A[N][N], float B[N][N],
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
+    <h3 class="widget-title">Nuage de mot-clés</h3>
     <div class="widget tagcloud">
-      <a href="/tags/GPU/" style="font-size: 10px;">GPU</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/java/" style="font-size: 10px;">java</a>
+      <a href="/tags/GPU/" style="font-size: 10px;">GPU</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/java/" style="font-size: 20px;">java</a>
     </div>
   </div>
 
@@ -293,9 +294,13 @@ __global__ void MatAdd(float A[N][N], float B[N][N],
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
+    <h3 class="widget-title">Articles récents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2016/10/15/volatile/">volatile应用场景</a>
+          </li>
         
           <li>
             <a href="/2016/10/01/hashmap/">hashmap</a>
@@ -326,7 +331,7 @@ __global__ void MatAdd(float A[N][N], float B[N][N],
   <div class="outer">
     <div id="footer-info" class="inner">
       &copy; 2016 John Doe<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>

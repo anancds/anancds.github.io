@@ -3,14 +3,23 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Catégorie: GPU | Hexo</title>
+  <title>volatile应用场景 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/categories/GPU/index.html">
+  <meta name="description" content="volatile的使用条件volatile变量具有可见性特性，但是不具备原子性。
+volatile变量可用于提供线程安全，但是只能应用于非常有限的一组用例：多个变量之间或者某个变量的当前值与修改后值之间没有约束。因此，单独使用volatile还不足以实现计数器、互斥锁或任何具有与多个变量相关的不变式的类。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="volatile应用场景">
+<meta property="og:url" content="http://yoursite.com/2016/10/15/volatile/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="volatile的使用条件volatile变量具有可见性特性，但是不具备原子性。
+volatile变量可用于提供线程安全，但是只能应用于非常有限的一组用例：多个变量之间或者某个变量的当前值与修改后值之间没有约束。因此，单独使用volatile还不足以实现计数器、互斥锁或任何具有与多个变量相关的不变式的类。">
+<meta property="og:image" content="http://images.cnblogs.com/cnblogs_com/aigongsi/201204/201204011757234696.jpg">
+<meta property="og:updated_time" content="2016-11-12T13:39:22.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="volatile应用场景">
+<meta name="twitter:description" content="volatile的使用条件volatile变量具有可见性特性，但是不具备原子性。
+volatile变量可用于提供线程安全，但是只能应用于非常有限的一组用例：多个变量之间或者某个变量的当前值与修改后值之间没有约束。因此，单独使用volatile还不足以实现计数器、互斥锁或任何具有与多个变量相关的不变式的类。">
+<meta name="twitter:image" content="http://images.cnblogs.com/cnblogs_com/aigongsi/201204/201204011757234696.jpg">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -59,39 +68,88 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/07/22/GPU-1/" class="archive-article-date">
-  <time datetime="2016-07-22T08:51:59.000Z" itemprop="datePublished">Jul 22</time>
+        <section id="main"><article id="post-volatile" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/10/15/volatile/" class="article-date">
+  <time datetime="2016-10-15T15:42:33.000Z" itemprop="datePublished">2016-10-15</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/07/22/GPU-1/">GPU学习</a>
+    <h1 class="article-title" itemprop="name">
+      volatile应用场景
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css"><h1 id="volatile的使用条件"><a href="#volatile的使用条件" class="headerlink" title="volatile的使用条件"></a>volatile的使用条件</h1><p>volatile变量具有可见性特性，但是不具备原子性。</p>
+<p>volatile变量可用于提供线程安全，但是只能应用于非常有限的一组用例：多个变量之间或者某个变量的当前值与修改后值之间没有约束。因此，单独使用volatile还不足以实现计数器、互斥锁或任何具有与多个变量相关的不变式的类。<br><a id="more"></a></p>
+<p><img src="http://images.cnblogs.com/cnblogs_com/aigongsi/201204/201204011757234696.jpg" alt=""></p>
+<pre><code>  public class Counter {
+
+    public volatile static int count = 0;
+
+    public static void inc() {
+
+    //这里延迟1毫秒，使得结果明显
+    try {
+        Thread.sleep(1);
+    } catch (InterruptedException e) {
+    }
+
+    count++;
+}
+
+public static void main(String[] args) {
+
+    //同时启动1000个线程，去进行i++计算，看看实际结果
+
+    for (int i = 0; i &lt; 1000; i++) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Counter.inc();
+            }
+        }).start();
+    }
+
+    //这里每次运行的值都有可能不同,可能为1000
+      System.out.println(&quot;运行结果:Counter.count=&quot; + Counter.count);
+  }
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/10/15/volatile/" data-id="civf9es5z0005f6onrz13jvs1" class="article-share-link">Partager</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
+
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/10/01/hashmap/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">hashmap</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
 
 </section>
         

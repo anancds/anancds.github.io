@@ -7,74 +7,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="系统相关I/O性能
 查看I/O：
-iostat -xz 1
-
-
-网络监测
-查看网络sar(System Activity Reporter)
-sar –n DEV 1
-
-
-如果“rxkB/s”和“txkB/s”两种相加超过100MB的话，说明网络已经接近饱和了。
-内存相关
-查看内存占用情况：
-free -g
-
-
-CPU
-查看CPU负载：
-mpstat -P ALL 2
-
-查看磁盘IO情况及CPU负">
+iostat -xz 1">
 <meta property="og:type" content="article">
 <meta property="og:title" content="一些系统相关问题的定位">
 <meta property="og:url" content="http://yoursite.com/2016/09/02/system/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="系统相关I/O性能
 查看I/O：
-iostat -xz 1
-
-
-网络监测
-查看网络sar(System Activity Reporter)
-sar –n DEV 1
-
-
-如果“rxkB/s”和“txkB/s”两种相加超过100MB的话，说明网络已经接近饱和了。
-内存相关
-查看内存占用情况：
-free -g
-
-
-CPU
-查看CPU负载：
-mpstat -P ALL 2
-
-查看磁盘IO情况及CPU负">
-<meta property="og:updated_time" content="2016-10-15T02:19:23.000Z">
+iostat -xz 1">
+<meta property="og:updated_time" content="2016-11-12T13:32:06.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一些系统相关问题的定位">
 <meta name="twitter:description" content="系统相关I/O性能
 查看I/O：
-iostat -xz 1
-
-
-网络监测
-查看网络sar(System Activity Reporter)
-sar –n DEV 1
-
-
-如果“rxkB/s”和“txkB/s”两种相加超过100MB的话，说明网络已经接近饱和了。
-内存相关
-查看内存占用情况：
-free -g
-
-
-CPU
-查看CPU负载：
-mpstat -P ALL 2
-
-查看磁盘IO情况及CPU负">
+iostat -xz 1">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -112,9 +58,9 @@ mpstat -P ALL 2
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -145,11 +91,12 @@ mpstat -P ALL 2
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="系统相关"><a href="#系统相关" class="headerlink" title="系统相关"></a>系统相关</h1><h2 id="I-O性能"><a href="#I-O性能" class="headerlink" title="I/O性能"></a>I/O性能</h2><ul>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css"><h1 id="系统相关"><a href="#系统相关" class="headerlink" title="系统相关"></a>系统相关</h1><h2 id="I-O性能"><a href="#I-O性能" class="headerlink" title="I/O性能"></a>I/O性能</h2><ul>
 <li><p>查看I/O：</p>
 <pre><code>iostat -xz 1
 </code></pre></li>
 </ul>
+<a id="more"></a>
 <h2 id="网络监测"><a href="#网络监测" class="headerlink" title="网络监测"></a>网络监测</h2><ul>
 <li><p>查看网络sar(System Activity Reporter)</p>
 <pre><code>sar –n DEV 1
@@ -233,7 +180,7 @@ grep java.lang.Thread.State /home/cds | awk &apos;{print $2$3$4$5}&apos; | sort 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/09/02/system/" data-id="ciuakuqmv00056zon0d3hhwp6" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/09/02/system/" data-id="civf9es5y0004f6onu3407hpd" class="article-share-link">Partager</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/System/">System</a></li></ul>
@@ -245,7 +192,7 @@ grep java.lang.Thread.State /home/cds | awk &apos;{print $2$3$4$5}&apos; | sort 
 <nav id="article-nav">
   
     <a href="/2016/09/13/javaGC/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
+      <strong class="article-nav-caption">Récent</strong>
       <div class="article-nav-title">
         
           GC调优
@@ -255,7 +202,7 @@ grep java.lang.Thread.State /home/cds | awk &apos;{print $2$3$4$5}&apos; | sort 
   
   
     <a href="/2016/07/22/GPU-1/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
+      <strong class="article-nav-caption">Ancien</strong>
       <div class="article-nav-title">GPU学习</div>
     </a>
   
@@ -270,7 +217,7 @@ grep java.lang.Thread.State /home/cds | awk &apos;{print $2$3$4$5}&apos; | sort 
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
+    <h3 class="widget-title">Catégories</h3>
     <div class="widget">
       <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/GPU/">GPU</a></li></ul>
     </div>
@@ -280,7 +227,7 @@ grep java.lang.Thread.State /home/cds | awk &apos;{print $2$3$4$5}&apos; | sort 
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
+    <h3 class="widget-title">Mot-clés</h3>
     <div class="widget">
       <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPU/">GPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li></ul>
     </div>
@@ -290,9 +237,9 @@ grep java.lang.Thread.State /home/cds | awk &apos;{print $2$3$4$5}&apos; | sort 
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
+    <h3 class="widget-title">Nuage de mot-clés</h3>
     <div class="widget tagcloud">
-      <a href="/tags/GPU/" style="font-size: 10px;">GPU</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/java/" style="font-size: 10px;">java</a>
+      <a href="/tags/GPU/" style="font-size: 10px;">GPU</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/java/" style="font-size: 20px;">java</a>
     </div>
   </div>
 
@@ -309,9 +256,13 @@ grep java.lang.Thread.State /home/cds | awk &apos;{print $2$3$4$5}&apos; | sort 
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
+    <h3 class="widget-title">Articles récents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2016/10/15/volatile/">volatile应用场景</a>
+          </li>
         
           <li>
             <a href="/2016/10/01/hashmap/">hashmap</a>
@@ -342,7 +293,7 @@ grep java.lang.Thread.State /home/cds | awk &apos;{print $2$3$4$5}&apos; | sort 
   <div class="outer">
     <div id="footer-info" class="inner">
       &copy; 2016 John Doe<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>
