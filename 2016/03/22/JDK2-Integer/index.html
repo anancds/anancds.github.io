@@ -3,7 +3,7 @@
 <head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
-  <title>Hexo</title>
+  <title>JDK源码分析2-Integer | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="JDK源码分析2-Integer前言看了Integer的源码后，Double、Float、Long、Short的源码大同小异。先来个测试代码：
 import java.util.Properties;
@@ -14,8 +14,8 @@ public class IntegerTest {
     Integer i1 = 3;
     Integer i2">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/2016/11/20/JDK2-Integer/index.html">
+<meta property="og:title" content="JDK源码分析2-Integer">
+<meta property="og:url" content="http://yoursite.com/2016/03/22/JDK2-Integer/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="JDK源码分析2-Integer前言看了Integer的源码后，Double、Float、Long、Short的源码大同小异。先来个测试代码：
 import java.util.Properties;
@@ -25,9 +25,9 @@ public class IntegerTest {
   private static void testEqual() {
     Integer i1 = 3;
     Integer i2">
-<meta property="og:updated_time" content="2016-11-20T02:24:43.000Z">
+<meta property="og:updated_time" content="2016-11-20T02:29:47.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="JDK源码分析2-Integer">
 <meta name="twitter:description" content="JDK源码分析2-Integer前言看了Integer的源码后，Double、Float、Long、Short的源码大同小异。先来个测试代码：
 import java.util.Properties;
 
@@ -86,13 +86,23 @@ public class IntegerTest {
       <div class="outer">
         <section id="main"><article id="post-JDK2-Integer" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/11/20/JDK2-Integer/" class="article-date">
-  <time datetime="2016-11-20T02:24:43.000Z" itemprop="datePublished">2016-11-20</time>
+    <a href="/2016/03/22/JDK2-Integer/" class="article-date">
+  <time datetime="2016-03-22T02:00:38.000Z" itemprop="datePublished">2016-03-22</time>
 </a>
     
   </div>
   <div class="article-inner">
     
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JDK源码分析2-Integer
+    </h1>
+  
+
+      </header>
     
     <div class="article-entry" itemprop="articleBody">
       
@@ -167,7 +177,8 @@ public class IntegerTest {
     testReverse();
   }
 }
-</code></pre><p>Integer源码需要一点点体系结构的知识，可以参考：<a href="https://en.wikipedia.org/wiki/Locality_of_reference" target="_blank" rel="external">https://en.wikipedia.org/wiki/Locality_of_reference</a></p>
+</code></pre><a id="more"></a>
+<p>Integer源码需要一点点体系结构的知识，可以参考：<a href="https://en.wikipedia.org/wiki/Locality_of_reference" target="_blank" rel="external">https://en.wikipedia.org/wiki/Locality_of_reference</a></p>
 <h2 id="类定义"><a href="#类定义" class="headerlink" title="类定义"></a>类定义</h2><pre><code>public final class Integer extends Number implements Comparable&lt;Integer&gt;
 </code></pre><p>从定义可以看出integer类不能被继承；实现了Comparable接口，但是只能和Integer比较。<br>在这个类的实现文档中提到了一本书：Hacker’s Delight，这是本神书，有空的时候得学习下。</p>
 <h2 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h2><pre><code>//这里的变量用二进制补码表示，取反加1，如果第一个数是1那么就是负数，如果是0就是正数。
@@ -465,28 +476,30 @@ return negative ? result : -result;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/11/20/JDK2-Integer/" data-id="civq0tj2900026vonxry0q9jh" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/03/22/JDK2-Integer/" data-id="civq13up40006beonqck0enlx" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jdk/">jdk</a></li></ul>
+
     </footer>
   </div>
   
     
 <nav id="article-nav">
   
-    <a href="/2016/11/20/JDK源码分析8-HashMap/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2016/03/23/JDK6-Observer/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          (no title)
+          JDK源码分析6-Observer、Observable
         
       </div>
     </a>
   
   
-    <a href="/2016/11/20/JDK6-Observer/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2016/01/20/JDK1-Object/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title"></div>
+      <div class="article-nav-title">JDK源码分析1-Object</div>
     </a>
   
 </nav>
@@ -512,7 +525,7 @@ return negative ? result : -result;
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPU/">GPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/courses/">courses</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPU/">GPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/courses/">courses</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jdk/">jdk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a></li></ul>
     </div>
   </div>
 
@@ -522,7 +535,7 @@ return negative ? result : -result;
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/GPU/" style="font-size: 10px;">GPU</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/courses/" style="font-size: 10px;">courses</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/jvm/" style="font-size: 10px;">jvm</a>
+      <a href="/tags/GPU/" style="font-size: 10px;">GPU</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/courses/" style="font-size: 10px;">courses</a> <a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/jdk/" style="font-size: 20px;">jdk</a> <a href="/tags/jvm/" style="font-size: 10px;">jvm</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a>
     </div>
   </div>
 
@@ -531,7 +544,7 @@ return negative ? result : -result;
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li></ul>
     </div>
   </div>
 
@@ -548,19 +561,19 @@ return negative ? result : -result;
           </li>
         
           <li>
-            <a href="/2016/11/20/JDK2-Integer/">(no title)</a>
+            <a href="/2016/11/20/openblas/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2016/11/20/JDK6-Observer/">(no title)</a>
+            <a href="/2016/11/20/learn/">最近一年的计划</a>
           </li>
         
           <li>
-            <a href="/2016/11/20/JDK7-Iterable/">(no title)</a>
+            <a href="/2016/11/12/class/">understanding java class loaders</a>
           </li>
         
           <li>
-            <a href="/2016/11/20/JDK1-Object/">(no title)</a>
+            <a href="/2016/10/15/volatile/">volatile应用场景</a>
           </li>
         
       </ul>

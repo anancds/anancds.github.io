@@ -3,23 +3,23 @@
 <head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
-  <title>Hexo</title>
+  <title>JDK源码分析7-Iterable | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="JDK源码分析7-IterableIterable这个接口只有三个方法，其中
 Iterator&amp;lt;T&amp;gt; iterator();
 这个方法其实就是为了实现java的foreach这种语法。测试代码和反编译的代码如下，用javap -c：
 List&amp;lt;String&amp;gt; list = new ArrayList&amp;lt;&amp;gt;(Arrays.asList(&amp;quot;a&amp;quot;,">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/2016/11/20/JDK7-Iterable/index.html">
+<meta property="og:title" content="JDK源码分析7-Iterable">
+<meta property="og:url" content="http://yoursite.com/2016/03/24/JDK7-Iterable/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="JDK源码分析7-IterableIterable这个接口只有三个方法，其中
 Iterator&amp;lt;T&amp;gt; iterator();
 这个方法其实就是为了实现java的foreach这种语法。测试代码和反编译的代码如下，用javap -c：
 List&amp;lt;String&amp;gt; list = new ArrayList&amp;lt;&amp;gt;(Arrays.asList(&amp;quot;a&amp;quot;,">
-<meta property="og:updated_time" content="2016-11-20T02:24:43.000Z">
+<meta property="og:updated_time" content="2016-11-20T02:31:54.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="JDK源码分析7-Iterable">
 <meta name="twitter:description" content="JDK源码分析7-IterableIterable这个接口只有三个方法，其中
 Iterator&amp;lt;T&amp;gt; iterator();
 这个方法其实就是为了实现java的foreach这种语法。测试代码和反编译的代码如下，用javap -c：
@@ -74,13 +74,23 @@ List&amp;lt;String&amp;gt; list = new ArrayList&amp;lt;&amp;gt;(Arrays.asList(&a
       <div class="outer">
         <section id="main"><article id="post-JDK7-Iterable" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/11/20/JDK7-Iterable/" class="article-date">
-  <time datetime="2016-11-20T02:24:43.000Z" itemprop="datePublished">2016-11-20</time>
+    <a href="/2016/03/24/JDK7-Iterable/" class="article-date">
+  <time datetime="2016-03-24T02:00:38.000Z" itemprop="datePublished">2016-03-24</time>
 </a>
     
   </div>
   <div class="article-inner">
     
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JDK源码分析7-Iterable
+    </h1>
+  
+
+      </header>
     
     <div class="article-entry" itemprop="articleBody">
       
@@ -96,7 +106,8 @@ Iterator iterator = list.iterator();
 if (iterator.hasNext()) {
     System.out.println(iterator.next());
 }
-</code></pre><p>反汇编后的字节码:</p>
+</code></pre><a id="more"></a>
+<p>反汇编后的字节码:</p>
 <pre><code>Code:
    0: new           #29                 // class java/util/ArrayList
    3: dup
@@ -143,28 +154,30 @@ if (iterator.hasNext()) {
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/11/20/JDK7-Iterable/" data-id="civq0tj2b00046von9fsjzmz0" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/03/24/JDK7-Iterable/" data-id="civq13up50007beontmckn7xi" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jdk/">jdk</a></li></ul>
+
     </footer>
   </div>
   
     
 <nav id="article-nav">
   
-    <a href="/2016/11/20/JDK6-Observer/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2016/07/22/GPU-1/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          (no title)
+          GPU学习
         
       </div>
     </a>
   
   
-    <a href="/2016/11/20/JDK1-Object/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2016/03/23/JDK6-Observer/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title"></div>
+      <div class="article-nav-title">JDK源码分析6-Observer、Observable</div>
     </a>
   
 </nav>
@@ -190,7 +203,7 @@ if (iterator.hasNext()) {
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPU/">GPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/courses/">courses</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPU/">GPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/courses/">courses</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jdk/">jdk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a></li></ul>
     </div>
   </div>
 
@@ -200,7 +213,7 @@ if (iterator.hasNext()) {
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/GPU/" style="font-size: 10px;">GPU</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/courses/" style="font-size: 10px;">courses</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/jvm/" style="font-size: 10px;">jvm</a>
+      <a href="/tags/GPU/" style="font-size: 10px;">GPU</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/courses/" style="font-size: 10px;">courses</a> <a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/jdk/" style="font-size: 20px;">jdk</a> <a href="/tags/jvm/" style="font-size: 10px;">jvm</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a>
     </div>
   </div>
 
@@ -209,7 +222,7 @@ if (iterator.hasNext()) {
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li></ul>
     </div>
   </div>
 
@@ -226,19 +239,19 @@ if (iterator.hasNext()) {
           </li>
         
           <li>
-            <a href="/2016/11/20/JDK2-Integer/">(no title)</a>
+            <a href="/2016/11/20/openblas/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2016/11/20/JDK6-Observer/">(no title)</a>
+            <a href="/2016/11/20/learn/">最近一年的计划</a>
           </li>
         
           <li>
-            <a href="/2016/11/20/JDK7-Iterable/">(no title)</a>
+            <a href="/2016/11/12/class/">understanding java class loaders</a>
           </li>
         
           <li>
-            <a href="/2016/11/20/JDK1-Object/">(no title)</a>
+            <a href="/2016/10/15/volatile/">volatile应用场景</a>
           </li>
         
       </ul>

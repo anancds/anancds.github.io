@@ -61,10 +61,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-hashmap" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-JDK7-Iterable" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/10/01/hashmap/" class="article-date">
-  <time datetime="2016-10-01T11:42:37.000Z" itemprop="datePublished">2016-10-01</time>
+    <a href="/2016/03/24/JDK7-Iterable/" class="article-date">
+  <time datetime="2016-03-24T02:00:38.000Z" itemprop="datePublished">2016-03-24</time>
 </a>
     
   </div>
@@ -75,7 +75,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/01/hashmap/">hashmap</a>
+      <a class="article-title" href="/2016/03/24/JDK7-Iterable/">JDK源码分析7-Iterable</a>
     </h1>
   
 
@@ -83,57 +83,31 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css">
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/10/01/hashmap/" data-id="civq0tj2p00096vonsseqjrmf" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
+        <h1 id="JDK源码分析7-Iterable"><a href="#JDK源码分析7-Iterable" class="headerlink" title="JDK源码分析7-Iterable"></a>JDK源码分析7-Iterable</h1><p>Iterable这个接口只有三个方法，其中</p>
+<pre><code>Iterator&lt;T&gt; iterator();
+</code></pre><p>这个方法其实就是为了实现java的foreach这种语法。测试代码和反编译的代码如下，用javap -c：</p>
+<pre><code>List&lt;String&gt; list = new ArrayList&lt;&gt;(Arrays.asList(&quot;a&quot;, &quot;b&quot;));
+for (String s : list) {
+    System.out.println(s);
+}
 
-
-  
-    <article id="post-javaGC" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/09/13/javaGC/" class="article-date">
-  <time datetime="2016-09-13T03:12:59.000Z" itemprop="datePublished">2016-09-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/09/13/javaGC/">GC调优</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="GC调优"><a href="#GC调优" class="headerlink" title="GC调优"></a>GC调优</h1><p>因为应用程序跑在jetty下，所以先说下启动jetty的jvm参数。</p>
-<pre><code>java -XX:+CMSParallelRemarkEnabled -XX:+CMSScavengeBeforeRemark -XX:+ParallelRefProcEnabled -XX:+UseCMSInitiatingOccupancyOnly -XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFraction=50 -XX:CMSMaxAbortablePrecleanTime=6000 -XX:ConcGCThreads=4 -XX:MaxTenuringThreshold=8 -XX:NewRatio=3 -XX:ParallelGCThreads=4 -XX:PretenureSizeThreshold=64m -XX:SurvivorRatio=4 -XX:TargetSurvivorRatio=90 -Xmx75600m -Xms75600m -XX:ParallelGCThreads=4 -XX:+UseParNewGC -XX:+UseCompressedOops -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=8999 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -jar start.jar jetty.http.port=80
+Iterator iterator = list.iterator();
+if (iterator.hasNext()) {
+    System.out.println(iterator.next());
+}
 </code></pre>
         
           <p class="article-more-link">
-            <a href="/2016/09/13/javaGC/#more">Read More</a>
+            <a href="/2016/03/24/JDK7-Iterable/#more">Read More</a>
           </p>
         
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/09/13/javaGC/" data-id="civq0tj32000i6vonezc8mxgo" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/03/24/JDK7-Iterable/" data-id="civq13up50007beontmckn7xi" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jdk/">jdk</a></li></ul>
 
     </footer>
   </div>
@@ -142,10 +116,10 @@
 
 
   
-    <article id="post-system" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-JDK6-Observer" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/09/02/system/" class="article-date">
-  <time datetime="2016-09-02T01:32:59.000Z" itemprop="datePublished">2016-09-02</time>
+    <a href="/2016/03/23/JDK6-Observer/" class="article-date">
+  <time datetime="2016-03-23T02:00:38.000Z" itemprop="datePublished">2016-03-23</time>
 </a>
     
   </div>
@@ -156,7 +130,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/09/02/system/">一些系统相关问题的定位</a>
+      <a class="article-title" href="/2016/03/23/JDK6-Observer/">JDK源码分析6-Observer、Observable</a>
     </h1>
   
 
@@ -164,72 +138,181 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="系统相关"><a href="#系统相关" class="headerlink" title="系统相关"></a>系统相关</h1><h2 id="I-O性能"><a href="#I-O性能" class="headerlink" title="I/O性能"></a>I/O性能</h2><ul>
-<li><p>查看I/O：</p>
-<pre><code>iostat -xz 1
-</code></pre></li>
+        <h1 id="JDK源码分析6-Observer、Observable"><a href="#JDK源码分析6-Observer、Observable" class="headerlink" title="JDK源码分析6-Observer、Observable"></a>JDK源码分析6-Observer、Observable</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>观察者模式是对象的行为模式，又叫发布-订阅(Publish/Subscribe)模式、模型-视图(Model/View)模式、源-监听器(Source/Listener)模式或从属者(Dependents)模式。<br>观察者模式定义了一种一对多的依赖关系，让多个观察者对象同时监听某一个主题对象。这个主题对象在状态上发生变化时，会通知所有观察者对象，使它们能够自动更新自己。</p>
+        
+          <p class="article-more-link">
+            <a href="/2016/03/23/JDK6-Observer/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/03/23/JDK6-Observer/" data-id="civq13up20005beonsu1rshg9" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jdk/">jdk</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-JDK2-Integer" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/03/22/JDK2-Integer/" class="article-date">
+  <time datetime="2016-03-22T02:00:38.000Z" itemprop="datePublished">2016-03-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/22/JDK2-Integer/">JDK源码分析2-Integer</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="JDK源码分析2-Integer"><a href="#JDK源码分析2-Integer" class="headerlink" title="JDK源码分析2-Integer"></a>JDK源码分析2-Integer</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>看了Integer的源码后，Double、Float、Long、Short的源码大同小异。<br>先来个测试代码：</p>
+<pre><code>import java.util.Properties;
+
+public class IntegerTest {
+
+  private static void testEqual() {
+    Integer i1 = 3;
+    Integer i2 = 3;
+    System.out.println(i1 == i2);
+
+    Integer i3 = 120;
+    Integer i4 = 120;
+    System.out.println(i3 == i4);
+  }
+
+  private static void testInitInteger() {
+    Integer i = new Integer(10);
+    i = 5;
+    //这里i输出是5，其实是创建了一个新的对象，而且这个新的对象是从Integer的cache中取出的。
+    System.out.println(i);
+  }
+
+  private static void testGetIntegrer() {
+    Properties properties = System.getProperties();
+    properties.put(&quot;cds&quot;, &quot;12345&quot;);
+    Integer i = Integer.getInteger(&quot;cds&quot;, 111);
+    System.out.println(i);
+  }
+
+  private static void testDecode() {
+    Integer bigNum = Integer.decode(&quot;-2147483648&quot;);
+    Integer decimal = Integer.decode(&quot;+10&quot;);
+    Integer oct = Integer.decode(&quot;-010&quot;);
+    Integer hex1 = Integer.decode(&quot;-0x10&quot;);
+    Integer hex2 = Integer.decode(&quot;#10&quot;);
+
+    System.out.println(bigNum);
+    System.out.println(decimal);
+    System.out.println(oct);
+    System.out.println(hex1);
+    System.out.println(hex2);
+  }
+
+  private static void testReverse() {
+    System.out.println(Integer.reverse(4));
+    System.out.println(Integer.reverseBytes(1));
+  }
+
+  private static void testToString() {
+    System.out.println(Integer.toString(10, 8));
+  }
+
+  private static void testParseInt() {
+    System.out.println(Integer.parseInt(&quot;0&quot;, 10));
+    System.out.println(Integer.parseInt(&quot;-0&quot;, 10));
+    System.out.println(Integer.parseInt(&quot;-FF&quot;, 16));
+    System.out.println(Integer.parseInt(&quot;10101010&quot;, 2));
+    System.out.println(Integer.parseInt(&quot;-2147483648&quot;, 10));
+    System.out.println(Integer.parseInt(&quot;2147483647&quot;, 10));
+  }
+
+  public static void main(String[] args) {
+    //        testEqual();
+    //        testToString();
+    //        testInitInteger();
+    //        testGetIntegrer();
+    //        testDecode();
+    //        testParseInt();
+    testReverse();
+  }
+}
+</code></pre>
+        
+          <p class="article-more-link">
+            <a href="/2016/03/22/JDK2-Integer/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/03/22/JDK2-Integer/" data-id="civq13up40006beonqck0enlx" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jdk/">jdk</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-JDK1-Object" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/20/JDK1-Object/" class="article-date">
+  <time datetime="2016-01-20T02:00:38.000Z" itemprop="datePublished">2016-01-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/20/JDK1-Object/">JDK源码分析1-Object</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css"><h1 id="JDK源码分析1-Object"><a href="#JDK源码分析1-Object" class="headerlink" title="JDK源码分析1-Object"></a>JDK源码分析1-Object</h1><p>源码分析基于JDK1.8</p>
+<h2 id="native-关键字"><a href="#native-关键字" class="headerlink" title="native 关键字"></a>native 关键字</h2><p>关于这个类没什么可以说的，因为其方法实现并不在这个类中。因为用native修饰的方法的实现其实是用别的语言实现的，一般是用c/c++实现的，实现方法就是JNI(Java native interface)。关于这个可以看看我们主线的salut-SDK模块，就是java来调用底层c实现的方法，c语言只需要提供动态库和头文件即可。<br>用native声明方法无非是为了java的跨平台。因为不同的操作系统对内存的拷贝、I/O访问，线程实现都是不同的。看看Object中的方法几乎都是与这些相关。<br>所以为了跨平台，那么就需要屏蔽这些差异，其实这些实现都是在JVM中。</p>
+<p>现实native的方法的一般步骤是：</p>
+<ul>
+<li>在Java中声明native()方法，然后编译；</li>
+<li>用javah产生一个.h文件；</li>
+<li>写一个.cpp文件实现native导出方法，其中需要包含第二步产生的.h文件（注意其中又包含了JDK带的jni.h文件）；</li>
+<li>将第三步的.cpp文件编译成动态链接库文件；</li>
+<li>在Java中用System.loadLibrary()方法加载第四步产生的动态链接库文件，这个native()方法就可以在Java中被访问了。<br>写了demo代码 <a href="https://github.com/anancds/learn-project/tree/master/jni-learn/src/main/java/com/cds/jni" target="_blank" rel="external">jni</a></li>
 </ul>
-        
-          <p class="article-more-link">
-            <a href="/2016/09/02/system/#more">Read More</a>
-          </p>
-        
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/09/02/system/" data-id="civq0tj33000k6von4j4h55k7" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/20/JDK1-Object/" data-id="civq13uov0002beonh3bhq6ct" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/System/">System</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-GPU-1" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/07/22/GPU-1/" class="article-date">
-  <time datetime="2016-07-22T08:51:59.000Z" itemprop="datePublished">2016-07-22</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/GPU/">GPU</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/07/22/GPU-1/">GPU学习</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>实验环境：<br>系统是Ubuntu，cuda的版本是7.5。</p>
-<p>具体怎么搭建还是参考官方文档<a href="http://docs.nvidia.com/cuda/index.html#axzz4DzlUApap">documents</a></p>
-<h2 id="1、Introduction"><a href="#1、Introduction" class="headerlink" title="1、Introduction"></a>1、Introduction</h2><h3 id="1、1-From-Graphics-Processing-to-General-Purpose-Parallel-Computing"><a href="#1、1-From-Graphics-Processing-to-General-Purpose-Parallel-Computing" class="headerlink" title="1、1 From Graphics Processing to General Purpose Parallel Computing"></a>1、1 From Graphics Processing to General Purpose Parallel Computing</h3><p>由于市场对实时性、3D高清图像的无限制需求的驱动，可编程的GPU(Graphic Processor Unit)已经发展成为一个高度并行的、多线程、多core的处理器。拥有大计算功率和高网络带宽。如下图所示：</p>
-        
-          <p class="article-more-link">
-            <a href="/2016/07/22/GPU-1/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/07/22/GPU-1/" data-id="civq0tj2g00056vonbqmj955t" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GPU/">GPU</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jdk/">jdk</a></li></ul>
 
     </footer>
   </div>
@@ -261,7 +344,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPU/">GPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/courses/">courses</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPU/">GPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/courses/">courses</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jdk/">jdk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a></li></ul>
     </div>
   </div>
 
@@ -271,7 +354,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/GPU/" style="font-size: 10px;">GPU</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/courses/" style="font-size: 10px;">courses</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/jvm/" style="font-size: 10px;">jvm</a>
+      <a href="/tags/GPU/" style="font-size: 10px;">GPU</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/courses/" style="font-size: 10px;">courses</a> <a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/jdk/" style="font-size: 20px;">jdk</a> <a href="/tags/jvm/" style="font-size: 10px;">jvm</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a>
     </div>
   </div>
 
@@ -280,7 +363,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li></ul>
     </div>
   </div>
 
@@ -297,19 +380,19 @@
           </li>
         
           <li>
-            <a href="/2016/11/20/JDK2-Integer/">(no title)</a>
+            <a href="/2016/11/20/openblas/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2016/11/20/JDK6-Observer/">(no title)</a>
+            <a href="/2016/11/20/learn/">最近一年的计划</a>
           </li>
         
           <li>
-            <a href="/2016/11/20/JDK7-Iterable/">(no title)</a>
+            <a href="/2016/11/12/class/">understanding java class loaders</a>
           </li>
         
           <li>
-            <a href="/2016/11/20/JDK1-Object/">(no title)</a>
+            <a href="/2016/10/15/volatile/">volatile应用场景</a>
           </li>
         
       </ul>
