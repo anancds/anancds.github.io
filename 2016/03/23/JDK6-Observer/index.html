@@ -5,16 +5,16 @@
   
   <title>JDK源码分析6-Observer、Observable | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="JDK源码分析6-Observer、Observable定义观察者模式是对象的行为模式，又叫发布-订阅(Publish/Subscribe)模式、模型-视图(Model/View)模式、源-监听器(Source/Listener)模式或从属者(Dependents)模式。观察者模式定义了一种一对多的依赖关系，让多个观察者对象同时监听某一个主题对象。这个主题对象在状态上发生变化时，会通知所有观察者对">
+  <meta name="description" content="定义观察者模式是对象的行为模式，又叫发布-订阅(Publish/Subscribe)模式、模型-视图(Model/View)模式、源-监听器(Source/Listener)模式或从属者(Dependents)模式。观察者模式定义了一种一对多的依赖关系，让多个观察者对象同时监听某一个主题对象。这个主题对象在状态上发生变化时，会通知所有观察者对象，使它们能够自动更新自己。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JDK源码分析6-Observer、Observable">
 <meta property="og:url" content="http://yoursite.com/2016/03/23/JDK6-Observer/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="JDK源码分析6-Observer、Observable定义观察者模式是对象的行为模式，又叫发布-订阅(Publish/Subscribe)模式、模型-视图(Model/View)模式、源-监听器(Source/Listener)模式或从属者(Dependents)模式。观察者模式定义了一种一对多的依赖关系，让多个观察者对象同时监听某一个主题对象。这个主题对象在状态上发生变化时，会通知所有观察者对">
-<meta property="og:updated_time" content="2016-11-20T02:31:16.000Z">
+<meta property="og:description" content="定义观察者模式是对象的行为模式，又叫发布-订阅(Publish/Subscribe)模式、模型-视图(Model/View)模式、源-监听器(Source/Listener)模式或从属者(Dependents)模式。观察者模式定义了一种一对多的依赖关系，让多个观察者对象同时监听某一个主题对象。这个主题对象在状态上发生变化时，会通知所有观察者对象，使它们能够自动更新自己。">
+<meta property="og:updated_time" content="2016-11-20T02:37:09.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JDK源码分析6-Observer、Observable">
-<meta name="twitter:description" content="JDK源码分析6-Observer、Observable定义观察者模式是对象的行为模式，又叫发布-订阅(Publish/Subscribe)模式、模型-视图(Model/View)模式、源-监听器(Source/Listener)模式或从属者(Dependents)模式。观察者模式定义了一种一对多的依赖关系，让多个观察者对象同时监听某一个主题对象。这个主题对象在状态上发生变化时，会通知所有观察者对">
+<meta name="twitter:description" content="定义观察者模式是对象的行为模式，又叫发布-订阅(Publish/Subscribe)模式、模型-视图(Model/View)模式、源-监听器(Source/Listener)模式或从属者(Dependents)模式。观察者模式定义了一种一对多的依赖关系，让多个观察者对象同时监听某一个主题对象。这个主题对象在状态上发生变化时，会通知所有观察者对象，使它们能够自动更新自己。">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -85,7 +85,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css"><h1 id="JDK源码分析6-Observer、Observable"><a href="#JDK源码分析6-Observer、Observable" class="headerlink" title="JDK源码分析6-Observer、Observable"></a>JDK源码分析6-Observer、Observable</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>观察者模式是对象的行为模式，又叫发布-订阅(Publish/Subscribe)模式、模型-视图(Model/View)模式、源-监听器(Source/Listener)模式或从属者(Dependents)模式。<br>观察者模式定义了一种一对多的依赖关系，让多个观察者对象同时监听某一个主题对象。这个主题对象在状态上发生变化时，会通知所有观察者对象，使它们能够自动更新自己。</p>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css"><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>观察者模式是对象的行为模式，又叫发布-订阅(Publish/Subscribe)模式、模型-视图(Model/View)模式、源-监听器(Source/Listener)模式或从属者(Dependents)模式。<br>观察者模式定义了一种一对多的依赖关系，让多个观察者对象同时监听某一个主题对象。这个主题对象在状态上发生变化时，会通知所有观察者对象，使它们能够自动更新自己。</p>
 <a id="more"></a>
 <h3 id="意图"><a href="#意图" class="headerlink" title="意图"></a>意图</h3><p>定义对象间的一种一对多的依赖关系，当一个对象的状态发生改变时，所有依赖于它的对象都得到通知并被自动更新。</p>
 <h3 id="主要解决"><a href="#主要解决" class="headerlink" title="主要解决"></a>主要解决</h3><p>一个对象状态改变给其他对象通知的问题，而且要考虑到易用和低耦合，保证高度的协作。</p>
@@ -143,7 +143,7 @@ public void notifyObservers(Object arg) {
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/03/23/JDK6-Observer/" data-id="civq13up20005beonsu1rshg9" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/03/23/JDK6-Observer/" data-id="civq19lv80006e6onj6payeak" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jdk/">jdk</a></li></ul>
@@ -192,7 +192,7 @@ public void notifyObservers(Object arg) {
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPU/">GPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/courses/">courses</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jdk/">jdk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPU/">GPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/courses/">courses</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jdk/">jdk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li></ul>
     </div>
   </div>
 
@@ -202,7 +202,7 @@ public void notifyObservers(Object arg) {
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/GPU/" style="font-size: 10px;">GPU</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/courses/" style="font-size: 10px;">courses</a> <a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/jdk/" style="font-size: 20px;">jdk</a> <a href="/tags/jvm/" style="font-size: 10px;">jvm</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a>
+      <a href="/tags/GPU/" style="font-size: 10px;">GPU</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/courses/" style="font-size: 10px;">courses</a> <a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/jdk/" style="font-size: 20px;">jdk</a> <a href="/tags/jvm/" style="font-size: 10px;">jvm</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/spark/" style="font-size: 10px;">spark</a>
     </div>
   </div>
 
@@ -228,7 +228,7 @@ public void notifyObservers(Object arg) {
           </li>
         
           <li>
-            <a href="/2016/11/20/openblas/">(no title)</a>
+            <a href="/2016/11/20/openblas/">openblas库安装</a>
           </li>
         
           <li>

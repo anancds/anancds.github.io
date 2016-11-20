@@ -5,25 +5,25 @@
   
   <title>JDK源码分析7-Iterable | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="JDK源码分析7-IterableIterable这个接口只有三个方法，其中
+  <meta name="description" content="Iterable这个接口只有三个方法，其中
 Iterator&amp;lt;T&amp;gt; iterator();
 这个方法其实就是为了实现java的foreach这种语法。测试代码和反编译的代码如下，用javap -c：
-List&amp;lt;String&amp;gt; list = new ArrayList&amp;lt;&amp;gt;(Arrays.asList(&amp;quot;a&amp;quot;,">
+List&amp;lt;String&amp;gt; list = new ArrayList&amp;lt;&amp;gt;(Arrays.asList(&amp;quot;a&amp;quot;, &amp;quot;b&amp;quot;));">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JDK源码分析7-Iterable">
 <meta property="og:url" content="http://yoursite.com/2016/03/24/JDK7-Iterable/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="JDK源码分析7-IterableIterable这个接口只有三个方法，其中
+<meta property="og:description" content="Iterable这个接口只有三个方法，其中
 Iterator&amp;lt;T&amp;gt; iterator();
 这个方法其实就是为了实现java的foreach这种语法。测试代码和反编译的代码如下，用javap -c：
-List&amp;lt;String&amp;gt; list = new ArrayList&amp;lt;&amp;gt;(Arrays.asList(&amp;quot;a&amp;quot;,">
-<meta property="og:updated_time" content="2016-11-20T02:31:54.000Z">
+List&amp;lt;String&amp;gt; list = new ArrayList&amp;lt;&amp;gt;(Arrays.asList(&amp;quot;a&amp;quot;, &amp;quot;b&amp;quot;));">
+<meta property="og:updated_time" content="2016-11-20T02:37:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JDK源码分析7-Iterable">
-<meta name="twitter:description" content="JDK源码分析7-IterableIterable这个接口只有三个方法，其中
+<meta name="twitter:description" content="Iterable这个接口只有三个方法，其中
 Iterator&amp;lt;T&amp;gt; iterator();
 这个方法其实就是为了实现java的foreach这种语法。测试代码和反编译的代码如下，用javap -c：
-List&amp;lt;String&amp;gt; list = new ArrayList&amp;lt;&amp;gt;(Arrays.asList(&amp;quot;a&amp;quot;,">
+List&amp;lt;String&amp;gt; list = new ArrayList&amp;lt;&amp;gt;(Arrays.asList(&amp;quot;a&amp;quot;, &amp;quot;b&amp;quot;));">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -94,7 +94,7 @@ List&amp;lt;String&amp;gt; list = new ArrayList&amp;lt;&amp;gt;(Arrays.asList(&a
     
     <div class="article-entry" itemprop="articleBody">
       
-        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css"><h1 id="JDK源码分析7-Iterable"><a href="#JDK源码分析7-Iterable" class="headerlink" title="JDK源码分析7-Iterable"></a>JDK源码分析7-Iterable</h1><p>Iterable这个接口只有三个方法，其中</p>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css"><p>Iterable这个接口只有三个方法，其中</p>
 <pre><code>Iterator&lt;T&gt; iterator();
 </code></pre><p>这个方法其实就是为了实现java的foreach这种语法。测试代码和反编译的代码如下，用javap -c：</p>
 <pre><code>List&lt;String&gt; list = new ArrayList&lt;&gt;(Arrays.asList(&quot;a&quot;, &quot;b&quot;));
@@ -154,7 +154,7 @@ if (iterator.hasNext()) {
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/03/24/JDK7-Iterable/" data-id="civq13up50007beontmckn7xi" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/03/24/JDK7-Iterable/" data-id="civq19lva0007e6onimpc5l2h" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jdk/">jdk</a></li></ul>
@@ -203,7 +203,7 @@ if (iterator.hasNext()) {
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPU/">GPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/courses/">courses</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jdk/">jdk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPU/">GPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/courses/">courses</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jdk/">jdk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li></ul>
     </div>
   </div>
 
@@ -213,7 +213,7 @@ if (iterator.hasNext()) {
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/GPU/" style="font-size: 10px;">GPU</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/courses/" style="font-size: 10px;">courses</a> <a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/jdk/" style="font-size: 20px;">jdk</a> <a href="/tags/jvm/" style="font-size: 10px;">jvm</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a>
+      <a href="/tags/GPU/" style="font-size: 10px;">GPU</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/courses/" style="font-size: 10px;">courses</a> <a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/jdk/" style="font-size: 20px;">jdk</a> <a href="/tags/jvm/" style="font-size: 10px;">jvm</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/spark/" style="font-size: 10px;">spark</a>
     </div>
   </div>
 
@@ -239,7 +239,7 @@ if (iterator.hasNext()) {
           </li>
         
           <li>
-            <a href="/2016/11/20/openblas/">(no title)</a>
+            <a href="/2016/11/20/openblas/">openblas库安装</a>
           </li>
         
           <li>

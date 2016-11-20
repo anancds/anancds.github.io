@@ -83,7 +83,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="JDK源码分析7-Iterable"><a href="#JDK源码分析7-Iterable" class="headerlink" title="JDK源码分析7-Iterable"></a>JDK源码分析7-Iterable</h1><p>Iterable这个接口只有三个方法，其中</p>
+        <p>Iterable这个接口只有三个方法，其中</p>
 <pre><code>Iterator&lt;T&gt; iterator();
 </code></pre><p>这个方法其实就是为了实现java的foreach这种语法。测试代码和反编译的代码如下，用javap -c：</p>
 <pre><code>List&lt;String&gt; list = new ArrayList&lt;&gt;(Arrays.asList(&quot;a&quot;, &quot;b&quot;));
@@ -104,7 +104,7 @@ if (iterator.hasNext()) {
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/03/24/JDK7-Iterable/" data-id="civq13up50007beontmckn7xi" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/03/24/JDK7-Iterable/" data-id="civq19lva0007e6onimpc5l2h" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jdk/">jdk</a></li></ul>
@@ -138,7 +138,7 @@ if (iterator.hasNext()) {
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="JDK源码分析6-Observer、Observable"><a href="#JDK源码分析6-Observer、Observable" class="headerlink" title="JDK源码分析6-Observer、Observable"></a>JDK源码分析6-Observer、Observable</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>观察者模式是对象的行为模式，又叫发布-订阅(Publish/Subscribe)模式、模型-视图(Model/View)模式、源-监听器(Source/Listener)模式或从属者(Dependents)模式。<br>观察者模式定义了一种一对多的依赖关系，让多个观察者对象同时监听某一个主题对象。这个主题对象在状态上发生变化时，会通知所有观察者对象，使它们能够自动更新自己。</p>
+        <h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>观察者模式是对象的行为模式，又叫发布-订阅(Publish/Subscribe)模式、模型-视图(Model/View)模式、源-监听器(Source/Listener)模式或从属者(Dependents)模式。<br>观察者模式定义了一种一对多的依赖关系，让多个观察者对象同时监听某一个主题对象。这个主题对象在状态上发生变化时，会通知所有观察者对象，使它们能够自动更新自己。</p>
         
           <p class="article-more-link">
             <a href="/2016/03/23/JDK6-Observer/#more">Read More</a>
@@ -147,7 +147,7 @@ if (iterator.hasNext()) {
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/03/23/JDK6-Observer/" data-id="civq13up20005beonsu1rshg9" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/03/23/JDK6-Observer/" data-id="civq19lv80006e6onj6payeak" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jdk/">jdk</a></li></ul>
@@ -181,7 +181,7 @@ if (iterator.hasNext()) {
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="JDK源码分析2-Integer"><a href="#JDK源码分析2-Integer" class="headerlink" title="JDK源码分析2-Integer"></a>JDK源码分析2-Integer</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>看了Integer的源码后，Double、Float、Long、Short的源码大同小异。<br>先来个测试代码：</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>看了Integer的源码后，Double、Float、Long、Short的源码大同小异。<br>先来个测试代码：</p>
 <pre><code>import java.util.Properties;
 
 public class IntegerTest {
@@ -261,7 +261,7 @@ public class IntegerTest {
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/03/22/JDK2-Integer/" data-id="civq13up40006beonqck0enlx" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/03/22/JDK2-Integer/" data-id="civq19lv00002e6ondweu9ywl" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jdk/">jdk</a></li></ul>
@@ -295,7 +295,7 @@ public class IntegerTest {
     
     <div class="article-entry" itemprop="articleBody">
       
-        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css"><h1 id="JDK源码分析1-Object"><a href="#JDK源码分析1-Object" class="headerlink" title="JDK源码分析1-Object"></a>JDK源码分析1-Object</h1><p>源码分析基于JDK1.8</p>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css"><p>源码分析基于JDK1.8</p>
 <h2 id="native-关键字"><a href="#native-关键字" class="headerlink" title="native 关键字"></a>native 关键字</h2><p>关于这个类没什么可以说的，因为其方法实现并不在这个类中。因为用native修饰的方法的实现其实是用别的语言实现的，一般是用c/c++实现的，实现方法就是JNI(Java native interface)。关于这个可以看看我们主线的salut-SDK模块，就是java来调用底层c实现的方法，c语言只需要提供动态库和头文件即可。<br>用native声明方法无非是为了java的跨平台。因为不同的操作系统对内存的拷贝、I/O访问，线程实现都是不同的。看看Object中的方法几乎都是与这些相关。<br>所以为了跨平台，那么就需要屏蔽这些差异，其实这些实现都是在JVM中。</p>
 <p>现实native的方法的一般步骤是：</p>
 <ul>
@@ -309,7 +309,7 @@ public class IntegerTest {
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/20/JDK1-Object/" data-id="civq13uov0002beonh3bhq6ct" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/20/JDK1-Object/" data-id="civq19lv70005e6on53owbnvk" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jdk/">jdk</a></li></ul>
@@ -344,7 +344,7 @@ public class IntegerTest {
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPU/">GPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/courses/">courses</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jdk/">jdk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPU/">GPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/courses/">courses</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jdk/">jdk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spark/">spark</a></li></ul>
     </div>
   </div>
 
@@ -354,7 +354,7 @@ public class IntegerTest {
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/GPU/" style="font-size: 10px;">GPU</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/courses/" style="font-size: 10px;">courses</a> <a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/jdk/" style="font-size: 20px;">jdk</a> <a href="/tags/jvm/" style="font-size: 10px;">jvm</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a>
+      <a href="/tags/GPU/" style="font-size: 10px;">GPU</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/courses/" style="font-size: 10px;">courses</a> <a href="/tags/java/" style="font-size: 15px;">java</a> <a href="/tags/jdk/" style="font-size: 20px;">jdk</a> <a href="/tags/jvm/" style="font-size: 10px;">jvm</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/spark/" style="font-size: 10px;">spark</a>
     </div>
   </div>
 
@@ -380,7 +380,7 @@ public class IntegerTest {
           </li>
         
           <li>
-            <a href="/2016/11/20/openblas/">(no title)</a>
+            <a href="/2016/11/20/openblas/">openblas库安装</a>
           </li>
         
           <li>
