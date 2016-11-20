@@ -3,14 +3,21 @@
 <head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
-  <title>Category: GPU | Hexo</title>
+  <title>Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
+  <meta name="description" content="openblas库安装直接用openblas库编译
+git clone https://github.com/xianyi/OpenBLAS.gitmake clenmake -j4make intall PREFIX=/root/openblas-installln -sf /root/openblas-install/lib/libopenblas.so  /usr/lib64/libblas">
+<meta property="og:type" content="article">
 <meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/categories/GPU/index.html">
+<meta property="og:url" content="http://yoursite.com/2016/11/20/openblas/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="openblas库安装直接用openblas库编译
+git clone https://github.com/xianyi/OpenBLAS.gitmake clenmake -j4make intall PREFIX=/root/openblas-installln -sf /root/openblas-install/lib/libopenblas.so  /usr/lib64/libblas">
+<meta property="og:updated_time" content="2016-11-20T02:24:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo">
+<meta name="twitter:description" content="openblas库安装直接用openblas库编译
+git clone https://github.com/xianyi/OpenBLAS.gitmake clenmake -j4make intall PREFIX=/root/openblas-installln -sf /root/openblas-install/lib/libopenblas.so  /usr/lib64/libblas">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -59,39 +66,58 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/07/22/GPU-1/" class="archive-article-date">
-  <time datetime="2016-07-22T08:51:59.000Z" itemprop="datePublished">Jul 22</time>
+        <section id="main"><article id="post-openblas" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/20/openblas/" class="article-date">
+  <time datetime="2016-11-20T02:24:00.000Z" itemprop="datePublished">2016-11-20</time>
 </a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/07/22/GPU-1/">GPU学习</a>
-    </h1>
-  
-
-    </header>
+    
   </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css"><h1 id="openblas库安装"><a href="#openblas库安装" class="headerlink" title="openblas库安装"></a>openblas库安装</h1><p>直接用openblas库编译</p>
+<p>git clone <a href="https://github.com/xianyi/OpenBLAS.git" target="_blank" rel="external">https://github.com/xianyi/OpenBLAS.git</a><br>make clen<br>make -j4<br>make intall PREFIX=/root/openblas-install<br>ln -sf /root/openblas-install/lib/libopenblas.so  /usr/lib64/libblas.so<br>ln -sf /root/openblas-install/lib/libopenblas.so  /usr/lib64/libblas.so.3<br>ln -sf /root/openblas-install/lib/libopenblas.so  /usr/lib64/liblapack.so.3</p>
+<p>spark编译命令：</p>
+<p>dev/make-distribution.sh –name blas –tgz -Pyarn -Phadoop-2.4 -Dhadoop.version=2.5.2 -Pnetlib-lgpl</p>
+<p>参考资料：</p>
+<p><a href="https://github.com/amplab/ml-matrix" target="_blank" rel="external">https://github.com/amplab/ml-matrix</a><br><a href="https://github.com/shivaram/matrix-bench" target="_blank" rel="external">https://github.com/shivaram/matrix-bench</a><br><a href="http://stackoverflow.com/questions/37848216/how-to-configure-high-performance-blas-lapack-for-breeze-on-amazon-emr-ec2" target="_blank" rel="external">http://stackoverflow.com/questions/37848216/how-to-configure-high-performance-blas-lapack-for-breeze-on-amazon-emr-ec2</a><br><a href="https://www.cloudera.com/documentation/enterprise/5-7-x/topics/spark_mllib.html#concept_arw_q2j_h5" target="_blank" rel="external">https://www.cloudera.com/documentation/enterprise/5-7-x/topics/spark_mllib.html#concept_arw_q2j_h5</a><br><a href="http://www.spark.tc/blas-libraries-in-mllib/" target="_blank" rel="external">http://www.spark.tc/blas-libraries-in-mllib/</a></p>
+<p>验证方式：</p>
+<p>bin/run-example mllib.MovieLensALS –rank 5 –numIterations 5 –lambda 1.0 –kryo /home/sample_movielens_data.txt</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/11/20/openblas/" data-id="civq0tj2s000b6vonhb22hugw" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/11/20/JDK1-Object/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/20/shell/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
 
 </section>
         

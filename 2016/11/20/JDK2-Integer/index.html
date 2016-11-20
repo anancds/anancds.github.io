@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="JDK源码分析2-Integer前言看了Integer的源码后，Double、Float、Long、Short的源码大同小异。先来个测试代码：
+import java.util.Properties;
+
+public class IntegerTest {
+
+  private static void testEqual() {
+    Integer i1 = 3;
+    Integer i2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://yoursite.com/2016/11/20/JDK2-Integer/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="JDK源码分析2-Integer前言看了Integer的源码后，Double、Float、Long、Short的源码大同小异。先来个测试代码：
+import java.util.Properties;
+
+public class IntegerTest {
+
+  private static void testEqual() {
+    Integer i1 = 3;
+    Integer i2">
+<meta property="og:updated_time" content="2016-11-20T02:24:43.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hexo">
+<meta name="twitter:description" content="JDK源码分析2-Integer前言看了Integer的源码后，Double、Float、Long、Short的源码大同小异。先来个测试代码：
+import java.util.Properties;
+
+public class IntegerTest {
+
+  private static void testEqual() {
+    Integer i1 = 3;
+    Integer i2">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+</head>
+
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-JDK2-Integer" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/20/JDK2-Integer/" class="article-date">
+  <time datetime="2016-11-20T02:24:43.000Z" itemprop="datePublished">2016-11-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css"><h1 id="JDK源码分析2-Integer"><a href="#JDK源码分析2-Integer" class="headerlink" title="JDK源码分析2-Integer"></a>JDK源码分析2-Integer</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>看了Integer的源码后，Double、Float、Long、Short的源码大同小异。<br>先来个测试代码：</p>
+<pre><code>import java.util.Properties;
+
+public class IntegerTest {
+
+  private static void testEqual() {
+    Integer i1 = 3;
+    Integer i2 = 3;
+    System.out.println(i1 == i2);
+
+    Integer i3 = 120;
+    Integer i4 = 120;
+    System.out.println(i3 == i4);
+  }
+
+  private static void testInitInteger() {
+    Integer i = new Integer(10);
+    i = 5;
+    //这里i输出是5，其实是创建了一个新的对象，而且这个新的对象是从Integer的cache中取出的。
+    System.out.println(i);
+  }
+
+  private static void testGetIntegrer() {
+    Properties properties = System.getProperties();
+    properties.put(&quot;cds&quot;, &quot;12345&quot;);
+    Integer i = Integer.getInteger(&quot;cds&quot;, 111);
+    System.out.println(i);
+  }
+
+  private static void testDecode() {
+    Integer bigNum = Integer.decode(&quot;-2147483648&quot;);
+    Integer decimal = Integer.decode(&quot;+10&quot;);
+    Integer oct = Integer.decode(&quot;-010&quot;);
+    Integer hex1 = Integer.decode(&quot;-0x10&quot;);
+    Integer hex2 = Integer.decode(&quot;#10&quot;);
+
+    System.out.println(bigNum);
+    System.out.println(decimal);
+    System.out.println(oct);
+    System.out.println(hex1);
+    System.out.println(hex2);
+  }
+
+  private static void testReverse() {
+    System.out.println(Integer.reverse(4));
+    System.out.println(Integer.reverseBytes(1));
+  }
+
+  private static void testToString() {
+    System.out.println(Integer.toString(10, 8));
+  }
+
+  private static void testParseInt() {
+    System.out.println(Integer.parseInt(&quot;0&quot;, 10));
+    System.out.println(Integer.parseInt(&quot;-0&quot;, 10));
+    System.out.println(Integer.parseInt(&quot;-FF&quot;, 16));
+    System.out.println(Integer.parseInt(&quot;10101010&quot;, 2));
+    System.out.println(Integer.parseInt(&quot;-2147483648&quot;, 10));
+    System.out.println(Integer.parseInt(&quot;2147483647&quot;, 10));
+  }
+
+  public static void main(String[] args) {
+    //        testEqual();
+    //        testToString();
+    //        testInitInteger();
+    //        testGetIntegrer();
+    //        testDecode();
+    //        testParseInt();
+    testReverse();
+  }
+}
+</code></pre><p>Integer源码需要一点点体系结构的知识，可以参考：<a href="https://en.wikipedia.org/wiki/Locality_of_reference" target="_blank" rel="external">https://en.wikipedia.org/wiki/Locality_of_reference</a></p>
+<h2 id="类定义"><a href="#类定义" class="headerlink" title="类定义"></a>类定义</h2><pre><code>public final class Integer extends Number implements Comparable&lt;Integer&gt;
+</code></pre><p>从定义可以看出integer类不能被继承；实现了Comparable接口，但是只能和Integer比较。<br>在这个类的实现文档中提到了一本书：Hacker’s Delight，这是本神书，有空的时候得学习下。</p>
+<h2 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h2><pre><code>//这里的变量用二进制补码表示，取反加1，如果第一个数是1那么就是负数，如果是0就是正数。
+//@native的意思就是这个字段有可能被本地底层代码引用，也就是c或者c++代码有可能会用到这个变量。
+//再具体点的话请参考stackoverflow的文章：
+//http://stackoverflow.com/questions/6101311/what-is-the-native-keyword-in-java-for
+//http://programmers.stackexchange.com/questions/218538/why-would-someone-use-native-annotations
+@Native public static final int   MIN_VALUE = 0x80000000;           //可以表示-2的31次方    即-2147483648
+@Native public static final int   MAX_VALUE = 0x7fffffff;           //可以表示2的31次方 - 1 即2147483647
+
+//这里有一个不安全的类型转换，所以需要抑制编译器来检查
+//基本类型int的Class实例，这个在学习Class类代码的时候再讲。
+@SuppressWarnings(&quot;unchecked&quot;)
+public static final Class&lt;Integer&gt;  TYPE = (Class&lt;Integer&gt;) Class.getPrimitiveClass(&quot;int&quot;);
+
+//Integer所表示的值就存储在这个变量中。注：在line 840
+//关于这个字段的文档说明中有个@serial，说明这个字段是会被序列化的。(不加static也不是transient，当然会被序列化啦！)
+private final int value;
+</code></pre><h2 id="静态内部类"><a href="#静态内部类" class="headerlink" title="静态内部类"></a>静态内部类</h2><pre><code>private static class IntegerCache {
+  static final int low = -128;
+  static final int high;
+  //实现缓存策略
+  static final Integer cache[];
+
+  //下面的静态代码只是为了求出high这个值，默认是127
+  static {
+    // high value may be configured by property
+    int h = 127;
+    String integerCacheHighPropValue =
+      sun.misc.VM.getSavedProperty(&quot;java.lang.Integer.IntegerCache.high&quot;);
+      if (integerCacheHighPropValue != null) {
+        try {
+            int i = parseInt(integerCacheHighPropValue);
+            i = Math.max(i, 127);
+            // Maximum array size is Integer.MAX_VALUE
+            h = Math.min(i, Integer.MAX_VALUE - (-low) -1);
+            } catch( NumberFormatException nfe) {
+              // If the property cannot be parsed into an int,  ignore it.
+            }
+          }
+          high = h;
+
+          cache = new Integer[(high - low) + 1];
+          int j = low;
+          for(int k = 0; k &lt; cache.length; k++)
+          cache[k] = new Integer(j++);
+
+          // range [-128, 127] must be interned (JLS7 5.1.7)
+          assert IntegerCache.high &gt;= 127;
+        }
+
+        private IntegerCache() {}
+        }
+</code></pre><h2 id="String转Integer或者int"><a href="#String转Integer或者int" class="headerlink" title="String转Integer或者int"></a>String转Integer或者int</h2><h3 id="getInteger"><a href="#getInteger" class="headerlink" title="getInteger"></a>getInteger</h3><p>首先分析getInteger，看调用关系，关键是decode函数，这个函数的作用就是讲String转换成Integer，但是只支持十进制、十六进制、八进制。</p>
+<pre><code>//nm由三部分组成：符号、基数说明符和字符序列，符号就是加好减号
+//基数说明符(0表示八进制，0x,0X，#表示十六进制，什么都不写则表示十进制)
+  public static Integer decode(String nm) throws NumberFormatException {
+      int radix = 10;
+      int index = 0;
+      boolean negative = false;
+      Integer result;
+
+      if (nm.length() == 0)
+          throw new NumberFormatException(&quot;Zero length string&quot;);
+      char firstChar = nm.charAt(0);
+      // Handle sign, if present
+      //先判断符号
+      if (firstChar == &apos;-&apos;) {
+          negative = true;
+          index++;
+      } else if (firstChar == &apos;+&apos;)
+          index++;
+
+      // Handle radix specifier, if present
+      //再判断基数，即radix，这个顺序不能颠倒，特别是0x和0
+      if (nm.startsWith(&quot;0x&quot;, index) || nm.startsWith(&quot;0X&quot;, index)) {
+          index += 2;
+          radix = 16;
+      }
+      else if (nm.startsWith(&quot;#&quot;, index)) {
+          index ++;
+          radix = 16;
+      }
+      else if (nm.startsWith(&quot;0&quot;, index) &amp;&amp; nm.length() &gt; 1 + index) {
+          index ++;
+          radix = 8;
+      }
+
+      //符号出现的位置出错，那么就抛出异常
+      if (nm.startsWith(&quot;-&quot;, index) || nm.startsWith(&quot;+&quot;, index))
+          throw new NumberFormatException(&quot;Sign character in wrong position&quot;);
+
+      //取出实际的数字，然后加上符号
+      try {
+          result = Integer.valueOf(nm.substring(index), radix);
+          result = negative ? Integer.valueOf(-result.intValue()) : result;
+      } catch (NumberFormatException e) {
+          // If number is Integer.MIN_VALUE, we&apos;ll end up here. The next line
+          // handles this case, and causes any genuine format error to be
+          // rethrown.
+          String constant = negative ? (&quot;-&quot; + nm.substring(index))
+                                     : nm.substring(index);
+          result = Integer.valueOf(constant, radix);
+      }
+      return result;
+  }
+</code></pre><h3 id="valueOf-NaN"><a href="#valueOf-NaN" class="headerlink" title="valueOf"></a>valueOf</h3><p>如果入参是int型，那么先去Integer的cache中查找，如果找到就返回，如果没有找到，那么就new 一个Integer</p>
+<pre><code>//先从缓存中查找
+public static Integer valueOf(int i) {
+    if (i &gt;= IntegerCache.low &amp;&amp; i &lt;= IntegerCache.high)
+        return IntegerCache.cache[i + (-IntegerCache.low)];
+    return new Integer(i);
+}
+</code></pre><p>如果入参是String，那么就转成10进制的int型。<br>如果入参是String，和int，那么就通过parseInt转换。</p>
+<h3 id="parseInt"><a href="#parseInt" class="headerlink" title="parseInt"></a>parseInt</h3><pre><code>int result = 0;
+boolean negative = false;
+int i = 0, len = s.length();
+int limit = -Integer.MAX_VALUE;
+int multmin;
+int digit;
+
+//更加ascii码表，比0字符小的字符如果想要转换成String，那么只有加号和减号是符合要求的，所以只要判断这两个符合即可。
+if (len &gt; 0) {
+    char firstChar = s.charAt(0);
+    if (firstChar &lt; &apos;0&apos;) { // Possible leading &quot;+&quot; or &quot;-&quot;
+        if (firstChar == &apos;-&apos;) {
+            negative = true;
+            limit = Integer.MIN_VALUE;
+        } else if (firstChar != &apos;+&apos;)
+            throw NumberFormatException.forInputString(s);
+
+        if (len == 1) // Cannot have lone &quot;+&quot; or &quot;-&quot;
+            throw NumberFormatException.forInputString(s);
+        i++;
+    }
+    multmin = limit / radix;
+    while (i &lt; len) {
+        // Accumulating negatively avoids surprises near MAX_VALUE
+        digit = Character.digit(s.charAt(i++),radix);
+        if (digit &lt; 0) {
+            throw NumberFormatException.forInputString(s);
+        }
+        if (result &lt; multmin) {
+            throw NumberFormatException.forInputString(s);
+        }
+        result * = radix;
+        if (result &lt; limit + digit) {
+            throw NumberFormatException.forInputString(s);
+        }
+        result -= digit;
+    }
+} else {
+    throw NumberFormatException.forInputString(s);
+}
+return negative ? result : -result;
+</code></pre><h3 id="parseUnsignedInt"><a href="#parseUnsignedInt" class="headerlink" title="parseUnsignedInt"></a>parseUnsignedInt</h3><p>java1.8后新增加的一个函数</p>
+<pre><code>public static int parseUnsignedInt(String s, int radix)
+            throws NumberFormatException {
+    if (s == null)  {
+        throw new NumberFormatException(&quot;null&quot;);
+    }
+
+    int len = s.length();
+    if (len &gt; 0) {
+        char firstChar = s.charAt(0);
+        //如果是负数，直接抛异常
+        if (firstChar == &apos;-&apos;) {
+            throw new
+                NumberFormatException(String.format(&quot;Illegal leading minus sign &quot; +
+                                                   &quot;on unsigned string %s.&quot;, s));
+        } else {
+            //如果这个无符号整数满足有符号整数的条件，那么就直接调用parseInt函数，否则就调用Long的parseLong了，下面的这个if语句是精髓。
+            if (len &lt;= 5 || // Integer.MAX_VALUE in Character.MAX_RADIX is 6 digits
+                (radix == 10 &amp;&amp; len &lt;= 9) ) { // Integer.MAX_VALUE in base 10 is 10 digits
+                return parseInt(s, radix);
+            } else {
+                long ell = Long.parseLong(s, radix);
+                //下面的十六进制的下划线的写法只是为了看着方便
+                if ((ell &amp; 0xffff_ffff_0000_0000L) == 0) {
+                    return (int) ell;
+                } else {
+                    throw new
+                        NumberFormatException(String.format(&quot;String value %s exceeds &quot; +
+                                                            &quot;range of unsigned int.&quot;, s));
+                }
+            }
+        }
+    } else {
+        throw NumberFormatException.forInputString(s);
+    }
+}
+</code></pre><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>parseInt方法返回的是基本类型int;</li>
+<li>其它方法返回的是Integer;</li>
+<li>valueOf(String)方法调用的是valueOf(int)方法;</li>
+<li>如果只需要返回一个基本类型，而不需要一个对象，可以直接使用Integert.parseInt(“123”);</li>
+<li>如果需要一个对象，那么建议使用valueOf(),因为该方法可以借助缓存带来的好处。</li>
+<li>如果是从系统配置中取值，那么就是用getInteger</li>
+</ul>
+<h2 id="int或者Integer转String"><a href="#int或者Integer转String" class="headerlink" title="int或者Integer转String"></a>int或者Integer转String</h2><p>这里的stringSize用到了一个数组sizeTable，就是利用局部性空间原理。<br>代码中需要将负数转成整数，因为-2147483648转成整数会溢出，所以最小负数需要单独的判断。</p>
+<p>//JDK作者对于10进制数转字符串单独实现，为的是提高性能，因为一般人的想法无非就是循环对10求余，得到对应的char型数组后就得到了最后的字符串，那么我们来看看作者的实现思路。</p>
+<pre><code>public static String toString(int i) {
+//这里把最小值单独拿出来是因为执行下面的方法会溢出。
+    if (i == Integer.MIN_VALUE)
+        return &quot;-2147483648&quot;;
+    int size = (i &lt; 0) ? stringSize(-i) + 1 : stringSize(i);
+    char[] buf = new char[size];
+    getChars(i, size, buf);
+    return new String(buf, true);
+}
+</code></pre><p>getChars函数是关键，有两个问题：</p>
+<ul>
+<li>为什么在getChars方法中，将整型数字写入到字符数组的过程中为什么按照数字65536分成了两部分呢？这个65535是怎么来的？</li>
+<li>在上面两段代码的部分二中，在对i进行除十操作的过程中为什么选择先乘以52429在向右移位19位。其中52429和19是怎么来的？</li>
+</ul>
+<p>先理解以下代码：<br>r = i - ((q &lt;&lt; 6) + (q &lt;&lt; 5) + (q &lt;&lt; 2));表示的其实是r = i - (q <em> 100);，i-q</em>2^6 - q<em>2^5 - q</em>2^2= i-64q-32q-4q = i-100q。<br>q = (i <em> num2) &gt;&gt;&gt; (num3);中，&gt;&gt;&gt;表示无符号向右移位。代表的意义就是除以2^num3。 所以q = (i </em> 52429) &gt;&gt;&gt; (16+3); 可以理解为：q = (i <em> 52429) / 524288;,那么就相当于 q= i </em> 0.1也就是q=i/10，这样通过乘法和向右以为的组合的形式代替了除法，能提高效率。<br>再来回答上面两个问题中，部分一和部分二中最大的区别就是部分一代码使用了除法，第二部分只使用了乘法和移位。因为乘法和移位的效率都要比除法高，所以第二部分单独使用了乘法加移位的方式来提高效率。那么为什么不都使用乘法加移位的形式呢？为什么大于num1(65536)的数字要使用除法呢？原因是int型变量最大不能超过(2^31-1)。如果使用一个太大的数字进行乘法加移位运算很容易导致溢出。那么为什么是65536这个数字呢？第二阶段用到的乘法的数字和移位的位数又是怎么来的呢？<br>我们再回答第二个问题。<br>既然我们要使用q = (i * num2) &gt;&gt;&gt; (num3);的形式使用乘法和移位代替除法，那么n和m就要有这样的关系：</p>
+<blockquote>
+<p>num2= (2^num3 /10 +1)</p>
+</blockquote>
+<p>只有这样才能保证(i * num2) &gt;&gt;&gt; (num3)结果接近于0.1。<br>那么52429这个数是怎么来的呢?来看以下数据：</p>
+<pre><code>2^10=1024, 103/1024=0.1005859375
+2^11=2048, 205/2048=0.10009765625
+2^12=4096, 410/4096=0.10009765625
+2^13=8192, 820/8192=0.10009765625
+2^14=16384, 1639/16384=0.10003662109375
+2^15=32768, 3277/32768=0.100006103515625
+2^16=65536, 6554/65536=0.100006103515625
+2^17=131072, 13108/131072=0.100006103515625
+2^18=262144, 26215/262144=0.10000228881835938
+2^19=524288, 52429/524288=0.10000038146972656
+2^20=1048576, 104858/1048576=0.1000003815
+2^21=2097152, 209716/2097152 = 0.1000003815
+2^22= 4194304, 419431/4194304= 0.1000001431
+</code></pre><p>超过22的数字我就不列举了，因为如果num3越大，就会要求i比较小，因为必须保证(i * num2) &gt;&gt;&gt; (num3)的过程不会因为溢出而导致数据不准确。那么是怎么敲定num1=65536,num2= 524288, num3=19的呢？ 这三个数字之间是有这样一个操作的：</p>
+<blockquote>
+<p>(num1 * num2) &gt;&gt;&gt; num3</p>
+</blockquote>
+<p>因为要保证该操作不能因为溢出导致数据不准确，所以num1和num2就相互约束。两个数的乘积是有一定范围的，不成超过这个范围，所以，num1增大，num2就要随之减小。<br>我觉得有以下几个原因：</p>
+<ul>
+<li>52429/524288=0.10000038146972656精度足够高。</li>
+<li>下一个精度较高的num2和num3的组合是419431和22。2^31/2^22 = 2^9 = 512。512这个数字实在是太小了。65536正好是2^16，一个整数占4个字节。65536正好占了2个字节，选定这样一个数字有利于CPU访问数据。</li>
+</ul>
+<p>不知道有没有人发现，其实65536<em> 52429是超过了int的最大值的，一旦超过就要溢出，那么为什么还能保证（num1</em> num2）&gt;&gt;&gt; num3能得到正确的结果呢？<br>这和&gt;&gt;&gt;有关，因为&gt;&gt;&gt;表示无符号右移，他会在忽略符号位，空位都以0补齐。<br>一个有符号的整数能表示的范围是-2147483648至2147483647，但是无符号的整数能表示的范围就是0-4,294,967,296（2^32），所以，只要保证num2*num3的值不超过2^32次方就可以了。65536是2^16,52429正好小于2^16,所以，他们的乘积在无符号向右移位就能保证数字的准确性。</p>
+<p>getChars使用了的体系结构知识：</p>
+<ul>
+<li>乘法比除法高效：q = ( i * 52429) &gt;&gt;&gt; (16+3); =&gt; 约等于q0.1,但i52429是整数乘法器，结合位移避免除法。</li>
+<li>重复利用计算结果:在获取r(i%100)时，充分利用了除法的结果，结合位移避免重复计算。</li>
+<li>位移比乘法高效:r = i – (( q &lt;&lt; 6) + ( q &lt;&lt; 5) + ( q &lt;&lt; 2)); = &gt;等价于r = i – (q * 100);</li>
+<li><p>局部性原理之空间局部性<br>(1).buf[–charPos] =DigitOnes[r];buf[–charPos] =DigitTens[r];通过查找数组，实现快速访问,避免除法计算<br>(2).buf [–charPos ] = digits [ r];</p>
+<pre><code>static void getChars(int i, int index, char[] buf) {
+    int q, r;
+    int charPos = index;
+    char sign = 0;
+
+    if (i &lt; 0) {
+        sign = &apos;-&apos;;
+        i = -i;
+    }
+
+     // 每次循环过后，都会将i中的走后两位保存到字符数组buf中的最后两位中，读者可以将数字i设置为12345678测试一下，
+     //第一次循环结束之后，buf[7] = 8,buf[6]=7。第二次循环结束之后，buf[5] = 6,buf[4] = 5。
+    while (i &gt;= 65536) {
+        q = i / 100;
+    // really: r = i - (q * 100);
+        r = i - ((q &lt;&lt; 6) + (q &lt;&lt; 5) + (q &lt;&lt; 2));
+        i = q;
+        //取DigitOnes[r]的目的其实取数字r%10的结果
+        buf [--charPos] = DigitOnes[r];
+        //取DigitTens[r]的目的其实是取数字r/10的结果
+        buf [--charPos] = DigitTens[r];
+    }
+
+    // Fall thru to fast mode for smaller numbers
+    // assert(i &lt;= 65536, i);
+    //循环将其他数字存入字符数组中空余位置
+    for (;;) {
+          //这里其实就是除以10。取数52429和16+3的原因在后文分析。
+        q = (i * 52429) &gt;&gt;&gt; (16+3);
+        // r = i-(q*10) ...
+        r = i - ((q &lt;&lt; 3) + (q &lt;&lt; 1));  
+        //将数字i的最后一位存入字符数组，
+        //还是12345678那个例子，这个for循环第一次结束后，buf[3]=4。
+        buf [--charPos] = digits [r];
+        i = q;
+        //for循环结束后，buf内容为“12345678”；
+        if (i == 0) break;
+    }
+    if (sign != 0) {
+        buf [--charPos] = sign;
+    }
+}
+</code></pre></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/11/20/JDK2-Integer/" data-id="civq0tj2900026vonxry0q9jh" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/11/20/JDK源码分析8-HashMap/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/11/20/JDK6-Observer/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/GPU/">GPU</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPU/">GPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/courses/">courses</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/GPU/" style="font-size: 10px;">GPU</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/courses/" style="font-size: 10px;">courses</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/jvm/" style="font-size: 10px;">jvm</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/11/20/JDK源码分析8-HashMap/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/20/JDK2-Integer/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/20/JDK6-Observer/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/20/JDK7-Iterable/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/20/JDK1-Object/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</body>
+</html>

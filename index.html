@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
   <title>Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -20,13 +20,13 @@
   
     <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
   
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 </head>
 
 <body>
-  <div id="container">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
     <div id="wrap">
       <header id="header">
   <div id="banner"></div>
@@ -48,9 +48,9 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -60,6 +60,890 @@
 </header>
       <div class="outer">
         <section id="main">
+  
+    <article id="post-JDK源码分析8-HashMap" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/20/JDK源码分析8-HashMap/" class="article-date">
+  <time datetime="2016-11-20T02:24:43.000Z" itemprop="datePublished">2016-11-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css">
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/11/20/JDK源码分析8-HashMap/" data-id="civq0tj1s00006vonlzgsph2w" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-JDK2-Integer" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/20/JDK2-Integer/" class="article-date">
+  <time datetime="2016-11-20T02:24:43.000Z" itemprop="datePublished">2016-11-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css"><h1 id="JDK源码分析2-Integer"><a href="#JDK源码分析2-Integer" class="headerlink" title="JDK源码分析2-Integer"></a>JDK源码分析2-Integer</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>看了Integer的源码后，Double、Float、Long、Short的源码大同小异。<br>先来个测试代码：</p>
+<pre><code>import java.util.Properties;
+
+public class IntegerTest {
+
+  private static void testEqual() {
+    Integer i1 = 3;
+    Integer i2 = 3;
+    System.out.println(i1 == i2);
+
+    Integer i3 = 120;
+    Integer i4 = 120;
+    System.out.println(i3 == i4);
+  }
+
+  private static void testInitInteger() {
+    Integer i = new Integer(10);
+    i = 5;
+    //这里i输出是5，其实是创建了一个新的对象，而且这个新的对象是从Integer的cache中取出的。
+    System.out.println(i);
+  }
+
+  private static void testGetIntegrer() {
+    Properties properties = System.getProperties();
+    properties.put(&quot;cds&quot;, &quot;12345&quot;);
+    Integer i = Integer.getInteger(&quot;cds&quot;, 111);
+    System.out.println(i);
+  }
+
+  private static void testDecode() {
+    Integer bigNum = Integer.decode(&quot;-2147483648&quot;);
+    Integer decimal = Integer.decode(&quot;+10&quot;);
+    Integer oct = Integer.decode(&quot;-010&quot;);
+    Integer hex1 = Integer.decode(&quot;-0x10&quot;);
+    Integer hex2 = Integer.decode(&quot;#10&quot;);
+
+    System.out.println(bigNum);
+    System.out.println(decimal);
+    System.out.println(oct);
+    System.out.println(hex1);
+    System.out.println(hex2);
+  }
+
+  private static void testReverse() {
+    System.out.println(Integer.reverse(4));
+    System.out.println(Integer.reverseBytes(1));
+  }
+
+  private static void testToString() {
+    System.out.println(Integer.toString(10, 8));
+  }
+
+  private static void testParseInt() {
+    System.out.println(Integer.parseInt(&quot;0&quot;, 10));
+    System.out.println(Integer.parseInt(&quot;-0&quot;, 10));
+    System.out.println(Integer.parseInt(&quot;-FF&quot;, 16));
+    System.out.println(Integer.parseInt(&quot;10101010&quot;, 2));
+    System.out.println(Integer.parseInt(&quot;-2147483648&quot;, 10));
+    System.out.println(Integer.parseInt(&quot;2147483647&quot;, 10));
+  }
+
+  public static void main(String[] args) {
+    //        testEqual();
+    //        testToString();
+    //        testInitInteger();
+    //        testGetIntegrer();
+    //        testDecode();
+    //        testParseInt();
+    testReverse();
+  }
+}
+</code></pre><p>Integer源码需要一点点体系结构的知识，可以参考：<a href="https://en.wikipedia.org/wiki/Locality_of_reference" target="_blank" rel="external">https://en.wikipedia.org/wiki/Locality_of_reference</a></p>
+<h2 id="类定义"><a href="#类定义" class="headerlink" title="类定义"></a>类定义</h2><pre><code>public final class Integer extends Number implements Comparable&lt;Integer&gt;
+</code></pre><p>从定义可以看出integer类不能被继承；实现了Comparable接口，但是只能和Integer比较。<br>在这个类的实现文档中提到了一本书：Hacker’s Delight，这是本神书，有空的时候得学习下。</p>
+<h2 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h2><pre><code>//这里的变量用二进制补码表示，取反加1，如果第一个数是1那么就是负数，如果是0就是正数。
+//@native的意思就是这个字段有可能被本地底层代码引用，也就是c或者c++代码有可能会用到这个变量。
+//再具体点的话请参考stackoverflow的文章：
+//http://stackoverflow.com/questions/6101311/what-is-the-native-keyword-in-java-for
+//http://programmers.stackexchange.com/questions/218538/why-would-someone-use-native-annotations
+@Native public static final int   MIN_VALUE = 0x80000000;           //可以表示-2的31次方    即-2147483648
+@Native public static final int   MAX_VALUE = 0x7fffffff;           //可以表示2的31次方 - 1 即2147483647
+
+//这里有一个不安全的类型转换，所以需要抑制编译器来检查
+//基本类型int的Class实例，这个在学习Class类代码的时候再讲。
+@SuppressWarnings(&quot;unchecked&quot;)
+public static final Class&lt;Integer&gt;  TYPE = (Class&lt;Integer&gt;) Class.getPrimitiveClass(&quot;int&quot;);
+
+//Integer所表示的值就存储在这个变量中。注：在line 840
+//关于这个字段的文档说明中有个@serial，说明这个字段是会被序列化的。(不加static也不是transient，当然会被序列化啦！)
+private final int value;
+</code></pre><h2 id="静态内部类"><a href="#静态内部类" class="headerlink" title="静态内部类"></a>静态内部类</h2><pre><code>private static class IntegerCache {
+  static final int low = -128;
+  static final int high;
+  //实现缓存策略
+  static final Integer cache[];
+
+  //下面的静态代码只是为了求出high这个值，默认是127
+  static {
+    // high value may be configured by property
+    int h = 127;
+    String integerCacheHighPropValue =
+      sun.misc.VM.getSavedProperty(&quot;java.lang.Integer.IntegerCache.high&quot;);
+      if (integerCacheHighPropValue != null) {
+        try {
+            int i = parseInt(integerCacheHighPropValue);
+            i = Math.max(i, 127);
+            // Maximum array size is Integer.MAX_VALUE
+            h = Math.min(i, Integer.MAX_VALUE - (-low) -1);
+            } catch( NumberFormatException nfe) {
+              // If the property cannot be parsed into an int,  ignore it.
+            }
+          }
+          high = h;
+
+          cache = new Integer[(high - low) + 1];
+          int j = low;
+          for(int k = 0; k &lt; cache.length; k++)
+          cache[k] = new Integer(j++);
+
+          // range [-128, 127] must be interned (JLS7 5.1.7)
+          assert IntegerCache.high &gt;= 127;
+        }
+
+        private IntegerCache() {}
+        }
+</code></pre><h2 id="String转Integer或者int"><a href="#String转Integer或者int" class="headerlink" title="String转Integer或者int"></a>String转Integer或者int</h2><h3 id="getInteger"><a href="#getInteger" class="headerlink" title="getInteger"></a>getInteger</h3><p>首先分析getInteger，看调用关系，关键是decode函数，这个函数的作用就是讲String转换成Integer，但是只支持十进制、十六进制、八进制。</p>
+<pre><code>//nm由三部分组成：符号、基数说明符和字符序列，符号就是加好减号
+//基数说明符(0表示八进制，0x,0X，#表示十六进制，什么都不写则表示十进制)
+  public static Integer decode(String nm) throws NumberFormatException {
+      int radix = 10;
+      int index = 0;
+      boolean negative = false;
+      Integer result;
+
+      if (nm.length() == 0)
+          throw new NumberFormatException(&quot;Zero length string&quot;);
+      char firstChar = nm.charAt(0);
+      // Handle sign, if present
+      //先判断符号
+      if (firstChar == &apos;-&apos;) {
+          negative = true;
+          index++;
+      } else if (firstChar == &apos;+&apos;)
+          index++;
+
+      // Handle radix specifier, if present
+      //再判断基数，即radix，这个顺序不能颠倒，特别是0x和0
+      if (nm.startsWith(&quot;0x&quot;, index) || nm.startsWith(&quot;0X&quot;, index)) {
+          index += 2;
+          radix = 16;
+      }
+      else if (nm.startsWith(&quot;#&quot;, index)) {
+          index ++;
+          radix = 16;
+      }
+      else if (nm.startsWith(&quot;0&quot;, index) &amp;&amp; nm.length() &gt; 1 + index) {
+          index ++;
+          radix = 8;
+      }
+
+      //符号出现的位置出错，那么就抛出异常
+      if (nm.startsWith(&quot;-&quot;, index) || nm.startsWith(&quot;+&quot;, index))
+          throw new NumberFormatException(&quot;Sign character in wrong position&quot;);
+
+      //取出实际的数字，然后加上符号
+      try {
+          result = Integer.valueOf(nm.substring(index), radix);
+          result = negative ? Integer.valueOf(-result.intValue()) : result;
+      } catch (NumberFormatException e) {
+          // If number is Integer.MIN_VALUE, we&apos;ll end up here. The next line
+          // handles this case, and causes any genuine format error to be
+          // rethrown.
+          String constant = negative ? (&quot;-&quot; + nm.substring(index))
+                                     : nm.substring(index);
+          result = Integer.valueOf(constant, radix);
+      }
+      return result;
+  }
+</code></pre><h3 id="valueOf-NaN"><a href="#valueOf-NaN" class="headerlink" title="valueOf"></a>valueOf</h3><p>如果入参是int型，那么先去Integer的cache中查找，如果找到就返回，如果没有找到，那么就new 一个Integer</p>
+<pre><code>//先从缓存中查找
+public static Integer valueOf(int i) {
+    if (i &gt;= IntegerCache.low &amp;&amp; i &lt;= IntegerCache.high)
+        return IntegerCache.cache[i + (-IntegerCache.low)];
+    return new Integer(i);
+}
+</code></pre><p>如果入参是String，那么就转成10进制的int型。<br>如果入参是String，和int，那么就通过parseInt转换。</p>
+<h3 id="parseInt"><a href="#parseInt" class="headerlink" title="parseInt"></a>parseInt</h3><pre><code>int result = 0;
+boolean negative = false;
+int i = 0, len = s.length();
+int limit = -Integer.MAX_VALUE;
+int multmin;
+int digit;
+
+//更加ascii码表，比0字符小的字符如果想要转换成String，那么只有加号和减号是符合要求的，所以只要判断这两个符合即可。
+if (len &gt; 0) {
+    char firstChar = s.charAt(0);
+    if (firstChar &lt; &apos;0&apos;) { // Possible leading &quot;+&quot; or &quot;-&quot;
+        if (firstChar == &apos;-&apos;) {
+            negative = true;
+            limit = Integer.MIN_VALUE;
+        } else if (firstChar != &apos;+&apos;)
+            throw NumberFormatException.forInputString(s);
+
+        if (len == 1) // Cannot have lone &quot;+&quot; or &quot;-&quot;
+            throw NumberFormatException.forInputString(s);
+        i++;
+    }
+    multmin = limit / radix;
+    while (i &lt; len) {
+        // Accumulating negatively avoids surprises near MAX_VALUE
+        digit = Character.digit(s.charAt(i++),radix);
+        if (digit &lt; 0) {
+            throw NumberFormatException.forInputString(s);
+        }
+        if (result &lt; multmin) {
+            throw NumberFormatException.forInputString(s);
+        }
+        result * = radix;
+        if (result &lt; limit + digit) {
+            throw NumberFormatException.forInputString(s);
+        }
+        result -= digit;
+    }
+} else {
+    throw NumberFormatException.forInputString(s);
+}
+return negative ? result : -result;
+</code></pre><h3 id="parseUnsignedInt"><a href="#parseUnsignedInt" class="headerlink" title="parseUnsignedInt"></a>parseUnsignedInt</h3><p>java1.8后新增加的一个函数</p>
+<pre><code>public static int parseUnsignedInt(String s, int radix)
+            throws NumberFormatException {
+    if (s == null)  {
+        throw new NumberFormatException(&quot;null&quot;);
+    }
+
+    int len = s.length();
+    if (len &gt; 0) {
+        char firstChar = s.charAt(0);
+        //如果是负数，直接抛异常
+        if (firstChar == &apos;-&apos;) {
+            throw new
+                NumberFormatException(String.format(&quot;Illegal leading minus sign &quot; +
+                                                   &quot;on unsigned string %s.&quot;, s));
+        } else {
+            //如果这个无符号整数满足有符号整数的条件，那么就直接调用parseInt函数，否则就调用Long的parseLong了，下面的这个if语句是精髓。
+            if (len &lt;= 5 || // Integer.MAX_VALUE in Character.MAX_RADIX is 6 digits
+                (radix == 10 &amp;&amp; len &lt;= 9) ) { // Integer.MAX_VALUE in base 10 is 10 digits
+                return parseInt(s, radix);
+            } else {
+                long ell = Long.parseLong(s, radix);
+                //下面的十六进制的下划线的写法只是为了看着方便
+                if ((ell &amp; 0xffff_ffff_0000_0000L) == 0) {
+                    return (int) ell;
+                } else {
+                    throw new
+                        NumberFormatException(String.format(&quot;String value %s exceeds &quot; +
+                                                            &quot;range of unsigned int.&quot;, s));
+                }
+            }
+        }
+    } else {
+        throw NumberFormatException.forInputString(s);
+    }
+}
+</code></pre><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>parseInt方法返回的是基本类型int;</li>
+<li>其它方法返回的是Integer;</li>
+<li>valueOf(String)方法调用的是valueOf(int)方法;</li>
+<li>如果只需要返回一个基本类型，而不需要一个对象，可以直接使用Integert.parseInt(“123”);</li>
+<li>如果需要一个对象，那么建议使用valueOf(),因为该方法可以借助缓存带来的好处。</li>
+<li>如果是从系统配置中取值，那么就是用getInteger</li>
+</ul>
+<h2 id="int或者Integer转String"><a href="#int或者Integer转String" class="headerlink" title="int或者Integer转String"></a>int或者Integer转String</h2><p>这里的stringSize用到了一个数组sizeTable，就是利用局部性空间原理。<br>代码中需要将负数转成整数，因为-2147483648转成整数会溢出，所以最小负数需要单独的判断。</p>
+<p>//JDK作者对于10进制数转字符串单独实现，为的是提高性能，因为一般人的想法无非就是循环对10求余，得到对应的char型数组后就得到了最后的字符串，那么我们来看看作者的实现思路。</p>
+<pre><code>public static String toString(int i) {
+//这里把最小值单独拿出来是因为执行下面的方法会溢出。
+    if (i == Integer.MIN_VALUE)
+        return &quot;-2147483648&quot;;
+    int size = (i &lt; 0) ? stringSize(-i) + 1 : stringSize(i);
+    char[] buf = new char[size];
+    getChars(i, size, buf);
+    return new String(buf, true);
+}
+</code></pre><p>getChars函数是关键，有两个问题：</p>
+<ul>
+<li>为什么在getChars方法中，将整型数字写入到字符数组的过程中为什么按照数字65536分成了两部分呢？这个65535是怎么来的？</li>
+<li>在上面两段代码的部分二中，在对i进行除十操作的过程中为什么选择先乘以52429在向右移位19位。其中52429和19是怎么来的？</li>
+</ul>
+<p>先理解以下代码：<br>r = i - ((q &lt;&lt; 6) + (q &lt;&lt; 5) + (q &lt;&lt; 2));表示的其实是r = i - (q <em> 100);，i-q</em>2^6 - q<em>2^5 - q</em>2^2= i-64q-32q-4q = i-100q。<br>q = (i <em> num2) &gt;&gt;&gt; (num3);中，&gt;&gt;&gt;表示无符号向右移位。代表的意义就是除以2^num3。 所以q = (i </em> 52429) &gt;&gt;&gt; (16+3); 可以理解为：q = (i <em> 52429) / 524288;,那么就相当于 q= i </em> 0.1也就是q=i/10，这样通过乘法和向右以为的组合的形式代替了除法，能提高效率。<br>再来回答上面两个问题中，部分一和部分二中最大的区别就是部分一代码使用了除法，第二部分只使用了乘法和移位。因为乘法和移位的效率都要比除法高，所以第二部分单独使用了乘法加移位的方式来提高效率。那么为什么不都使用乘法加移位的形式呢？为什么大于num1(65536)的数字要使用除法呢？原因是int型变量最大不能超过(2^31-1)。如果使用一个太大的数字进行乘法加移位运算很容易导致溢出。那么为什么是65536这个数字呢？第二阶段用到的乘法的数字和移位的位数又是怎么来的呢？<br>我们再回答第二个问题。<br>既然我们要使用q = (i * num2) &gt;&gt;&gt; (num3);的形式使用乘法和移位代替除法，那么n和m就要有这样的关系：</p>
+<blockquote>
+<p>num2= (2^num3 /10 +1)</p>
+</blockquote>
+<p>只有这样才能保证(i * num2) &gt;&gt;&gt; (num3)结果接近于0.1。<br>那么52429这个数是怎么来的呢?来看以下数据：</p>
+<pre><code>2^10=1024, 103/1024=0.1005859375
+2^11=2048, 205/2048=0.10009765625
+2^12=4096, 410/4096=0.10009765625
+2^13=8192, 820/8192=0.10009765625
+2^14=16384, 1639/16384=0.10003662109375
+2^15=32768, 3277/32768=0.100006103515625
+2^16=65536, 6554/65536=0.100006103515625
+2^17=131072, 13108/131072=0.100006103515625
+2^18=262144, 26215/262144=0.10000228881835938
+2^19=524288, 52429/524288=0.10000038146972656
+2^20=1048576, 104858/1048576=0.1000003815
+2^21=2097152, 209716/2097152 = 0.1000003815
+2^22= 4194304, 419431/4194304= 0.1000001431
+</code></pre><p>超过22的数字我就不列举了，因为如果num3越大，就会要求i比较小，因为必须保证(i * num2) &gt;&gt;&gt; (num3)的过程不会因为溢出而导致数据不准确。那么是怎么敲定num1=65536,num2= 524288, num3=19的呢？ 这三个数字之间是有这样一个操作的：</p>
+<blockquote>
+<p>(num1 * num2) &gt;&gt;&gt; num3</p>
+</blockquote>
+<p>因为要保证该操作不能因为溢出导致数据不准确，所以num1和num2就相互约束。两个数的乘积是有一定范围的，不成超过这个范围，所以，num1增大，num2就要随之减小。<br>我觉得有以下几个原因：</p>
+<ul>
+<li>52429/524288=0.10000038146972656精度足够高。</li>
+<li>下一个精度较高的num2和num3的组合是419431和22。2^31/2^22 = 2^9 = 512。512这个数字实在是太小了。65536正好是2^16，一个整数占4个字节。65536正好占了2个字节，选定这样一个数字有利于CPU访问数据。</li>
+</ul>
+<p>不知道有没有人发现，其实65536<em> 52429是超过了int的最大值的，一旦超过就要溢出，那么为什么还能保证（num1</em> num2）&gt;&gt;&gt; num3能得到正确的结果呢？<br>这和&gt;&gt;&gt;有关，因为&gt;&gt;&gt;表示无符号右移，他会在忽略符号位，空位都以0补齐。<br>一个有符号的整数能表示的范围是-2147483648至2147483647，但是无符号的整数能表示的范围就是0-4,294,967,296（2^32），所以，只要保证num2*num3的值不超过2^32次方就可以了。65536是2^16,52429正好小于2^16,所以，他们的乘积在无符号向右移位就能保证数字的准确性。</p>
+<p>getChars使用了的体系结构知识：</p>
+<ul>
+<li>乘法比除法高效：q = ( i * 52429) &gt;&gt;&gt; (16+3); =&gt; 约等于q0.1,但i52429是整数乘法器，结合位移避免除法。</li>
+<li>重复利用计算结果:在获取r(i%100)时，充分利用了除法的结果，结合位移避免重复计算。</li>
+<li>位移比乘法高效:r = i – (( q &lt;&lt; 6) + ( q &lt;&lt; 5) + ( q &lt;&lt; 2)); = &gt;等价于r = i – (q * 100);</li>
+<li><p>局部性原理之空间局部性<br>(1).buf[–charPos] =DigitOnes[r];buf[–charPos] =DigitTens[r];通过查找数组，实现快速访问,避免除法计算<br>(2).buf [–charPos ] = digits [ r];</p>
+<pre><code>static void getChars(int i, int index, char[] buf) {
+    int q, r;
+    int charPos = index;
+    char sign = 0;
+
+    if (i &lt; 0) {
+        sign = &apos;-&apos;;
+        i = -i;
+    }
+
+     // 每次循环过后，都会将i中的走后两位保存到字符数组buf中的最后两位中，读者可以将数字i设置为12345678测试一下，
+     //第一次循环结束之后，buf[7] = 8,buf[6]=7。第二次循环结束之后，buf[5] = 6,buf[4] = 5。
+    while (i &gt;= 65536) {
+        q = i / 100;
+    // really: r = i - (q * 100);
+        r = i - ((q &lt;&lt; 6) + (q &lt;&lt; 5) + (q &lt;&lt; 2));
+        i = q;
+        //取DigitOnes[r]的目的其实取数字r%10的结果
+        buf [--charPos] = DigitOnes[r];
+        //取DigitTens[r]的目的其实是取数字r/10的结果
+        buf [--charPos] = DigitTens[r];
+    }
+
+    // Fall thru to fast mode for smaller numbers
+    // assert(i &lt;= 65536, i);
+    //循环将其他数字存入字符数组中空余位置
+    for (;;) {
+          //这里其实就是除以10。取数52429和16+3的原因在后文分析。
+        q = (i * 52429) &gt;&gt;&gt; (16+3);
+        // r = i-(q*10) ...
+        r = i - ((q &lt;&lt; 3) + (q &lt;&lt; 1));  
+        //将数字i的最后一位存入字符数组，
+        //还是12345678那个例子，这个for循环第一次结束后，buf[3]=4。
+        buf [--charPos] = digits [r];
+        i = q;
+        //for循环结束后，buf内容为“12345678”；
+        if (i == 0) break;
+    }
+    if (sign != 0) {
+        buf [--charPos] = sign;
+    }
+}
+</code></pre></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/11/20/JDK2-Integer/" data-id="civq0tj2900026vonxry0q9jh" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-JDK6-Observer" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/20/JDK6-Observer/" class="article-date">
+  <time datetime="2016-11-20T02:24:43.000Z" itemprop="datePublished">2016-11-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css"><h1 id="JDK源码分析6-Observer、Observable"><a href="#JDK源码分析6-Observer、Observable" class="headerlink" title="JDK源码分析6-Observer、Observable"></a>JDK源码分析6-Observer、Observable</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>观察者模式是对象的行为模式，又叫发布-订阅(Publish/Subscribe)模式、模型-视图(Model/View)模式、源-监听器(Source/Listener)模式或从属者(Dependents)模式。<br>观察者模式定义了一种一对多的依赖关系，让多个观察者对象同时监听某一个主题对象。这个主题对象在状态上发生变化时，会通知所有观察者对象，使它们能够自动更新自己。</p>
+<h3 id="意图"><a href="#意图" class="headerlink" title="意图"></a>意图</h3><p>定义对象间的一种一对多的依赖关系，当一个对象的状态发生改变时，所有依赖于它的对象都得到通知并被自动更新。</p>
+<h3 id="主要解决"><a href="#主要解决" class="headerlink" title="主要解决"></a>主要解决</h3><p>一个对象状态改变给其他对象通知的问题，而且要考虑到易用和低耦合，保证高度的协作。</p>
+<h3 id="何时使用"><a href="#何时使用" class="headerlink" title="何时使用"></a>何时使用</h3><p>一个对象（目标对象）的状态发生改变，所有的依赖对象（观察者对象）都将得到通知，进行广播通知。</p>
+<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><ul>
+<li>有多个子类共有的方法，且逻辑相同。</li>
+<li>重要的、复杂的方法，可以考虑作为模板方法。</li>
+</ul>
+<h3 id="使用观察者模式的好处"><a href="#使用观察者模式的好处" class="headerlink" title="使用观察者模式的好处"></a>使用观察者模式的好处</h3><p>观察者模式（Observer）完美的将观察者和被观察的对象分离开。举个例子，用户界面可以作为一个观察者，业务数据是被观察者，用户界面观察业务数据的变化，发现数据变化后，就显示在界面上。面向对象设计的一个原则是：系统中的每个类将重点放在某一个功能上，而不是其他方面。一个对象只做一件事情，并且将他做好。观察者模式在模块之间划定了清晰的界限，提高了应用程序的可维护性和重用性。</p>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ul>
+<li>JAVA 中已经有了对观察者模式的支持类。</li>
+<li>避免循环引用。</li>
+<li>如果顺序执行，某一观察者错误会导致系统卡壳，一般采用异步方式。</li>
+</ul>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>观察者模式有很多实现方式，从根本上说，该模式必须包含两个角色：观察者和被观察对象。在刚才的例子中，业务数据是被观察对象，用户界面是观察者。观察者和被观察者之间存在“观察”的逻辑关联，当被观察者发生改变的时候，观察者就会观察到这样的变化，并且做出相应的响应。如果在用户界面、业务数据之间使用这样的观察过程，可以确保界面和数据之间划清界限，假定应用程序的需求发生变化，需要修改界面的表现，只需要重新构建一个用户界面，业务数据不需要发生变化。</p>
+<h3 id="Observer和Observable"><a href="#Observer和Observable" class="headerlink" title="Observer和Observable"></a>Observer和Observable</h3><p>Observer是一个接口，就是一个观察者，源码中只有一个方法：update。当观察的目标改变时，被观察者就会调用这个方法。</p>
+<p>Observable其实就是一个被观察者。源码中用Vector保存观察者，因为Vector是线程安全的，并且里面所有的方法都用synchronized关键字来保证线程安全。<br>源码中最关键的方法就是notifyobservers：</p>
+<pre><code>//通知所有订阅此主题的观察者对象。
+//可以看出，通过bool类型变量changed的赋值，可以判断主题是否更新，以作为是否将信息推送给观察者的依据。changed的改变必需是线程安全的，
+//这也是为什么setChanegd方法和clearChanged方法都用synchronized关键字声明。
+//使用了Vector容器来保存观察者的引用，而不是ArrayList，同样是出于线程安全的考虑,ArrayList线程不安全，Vector线程安全。
+public void notifyObservers(Object arg) {
+    /*
+     * a temporary array buffer, used as a snapshot of the state of
+     * current Observers.
+     */
+    Object[] arrLocal;
+
+    //出于线程安全的需要，在将obs转为数组时，需要用同步控制块来做处理，这也是为了防止由于多个观察者线程并发对obs改变造成的线程异常，
+    //尽管这里是线程安全的，但是jdk源码的注释中指出，这里有可能出现刚刚加入的观察者无法通知到更新或者刚刚删除的观察者接收到了不该接受到的消息的情况。
+    synchronized (this) {
+        /* We don&apos;t want the Observer doing callbacks into
+         * arbitrary code while holding its own Monitor.
+         * The code where we extract each Observable from
+         * the Vector and store the state of the Observer
+         * needs synchronization, but notifying observers
+         * does not (should not).  The worst result of any
+         * potential race-condition here is that:
+         * 1) a newly-added Observer will miss a
+         *   notification in progress
+         * 2) a recently unregistered Observer will be
+         *   wrongly notified when it doesn&apos;t care
+         */
+        if (!changed)
+            return;
+        arrLocal = obs.toArray();
+        clearChanged();
+    }
+
+    for (int i = arrLocal.length-1; i&gt;=0; i--)
+        //调用所有观察者的update方法。
+        ((Observer)arrLocal[i]).update(this, arg);
+}
+</code></pre><h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/11/20/JDK6-Observer/" data-id="civq0tj2a00036vonl5nx4buj" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-JDK7-Iterable" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/20/JDK7-Iterable/" class="article-date">
+  <time datetime="2016-11-20T02:24:43.000Z" itemprop="datePublished">2016-11-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css"><h1 id="JDK源码分析7-Iterable"><a href="#JDK源码分析7-Iterable" class="headerlink" title="JDK源码分析7-Iterable"></a>JDK源码分析7-Iterable</h1><p>Iterable这个接口只有三个方法，其中</p>
+<pre><code>Iterator&lt;T&gt; iterator();
+</code></pre><p>这个方法其实就是为了实现java的foreach这种语法。测试代码和反编译的代码如下，用javap -c：</p>
+<pre><code>List&lt;String&gt; list = new ArrayList&lt;&gt;(Arrays.asList(&quot;a&quot;, &quot;b&quot;));
+for (String s : list) {
+    System.out.println(s);
+}
+
+Iterator iterator = list.iterator();
+if (iterator.hasNext()) {
+    System.out.println(iterator.next());
+}
+</code></pre><p>反汇编后的字节码:</p>
+<pre><code>Code:
+   0: new           #29                 // class java/util/ArrayList
+   3: dup
+   4: iconst_2
+   5: anewarray     #30                 // class java/lang/String
+   8: dup
+   9: iconst_0
+  10: ldc           #31                 // String a
+  12: aastore
+  13: dup
+  14: iconst_1
+  15: ldc           #32                 // String b
+  17: aastore
+  18: invokestatic  #33                 // Method java/util/Arrays.asList:([Ljava/lang/Object;)Ljava/util/List;
+  21: invokespecial #34                 // Method java/util/ArrayList.&quot;&lt;init&gt;&quot;:(Ljava/util/Collection;)V
+  24: astore_1
+  25: aload_1
+  26: invokeinterface #35,  1           // InterfaceMethod java/util/List.iterator:()Ljava/util/Iterator;
+  31: astore_2
+  32: aload_2
+  33: invokeinterface #36,  1           // InterfaceMethod java/util/Iterator.hasNext:()Z18
+  38: ifeq          61
+  41: aload_2
+  42: invokeinterface #37,  1           // InterfaceMethod java/util/Iterator.next:()Ljava/lang/Object;
+  47: checkcast     #30                 // class java/lang/String
+  50: astore_3
+  51: getstatic     #6                  // Field java/lang/System.out:Ljava/io/PrintStream;
+  54: aload_3
+  55: invokevirtual #8                  // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+  58: goto          32
+  61: aload_1
+  62: invokeinterface #35,  1           // InterfaceMethod java/util/List.iterator:()Ljava/util/Iterator;
+  67: astore_2
+  68: aload_2
+  69: invokeinterface #36,  1           // InterfaceMethod java/util/Iterator.hasNext:()Z
+  74: ifeq          89
+  77: getstatic     #6                  // Field java/lang/System.out:Ljava/io/PrintStream;
+  80: aload_2
+  81: invokeinterface #37,  1           // InterfaceMethod java/util/Iterator.next:()Ljava/lang/Object;
+  86: invokevirtual #38                 // Method java/io/PrintStream.println:(Ljava/lang/Object;)V
+  89: return
+</code></pre><p>我们看到18行到51行和 55行到86行原来是一样的，也就是jvm把foreach这种语法结构解释成了iterator。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/11/20/JDK7-Iterable/" data-id="civq0tj2b00046von9fsjzmz0" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-JDK1-Object" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/20/JDK1-Object/" class="article-date">
+  <time datetime="2016-11-20T02:24:43.000Z" itemprop="datePublished">2016-11-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css"><h1 id="JDK源码分析1-Object"><a href="#JDK源码分析1-Object" class="headerlink" title="JDK源码分析1-Object"></a>JDK源码分析1-Object</h1><p>源码分析基于JDK1.8</p>
+<h2 id="native-关键字"><a href="#native-关键字" class="headerlink" title="native 关键字"></a>native 关键字</h2><p>关于这个类没什么可以说的，因为其方法实现并不在这个类中。因为用native修饰的方法的实现其实是用别的语言实现的，一般是用c/c++实现的，实现方法就是JNI(Java native interface)。关于这个可以看看我们主线的salut-SDK模块，就是java来调用底层c实现的方法，c语言只需要提供动态库和头文件即可。<br>用native声明方法无非是为了java的跨平台。因为不同的操作系统对内存的拷贝、I/O访问，线程实现都是不同的。看看Object中的方法几乎都是与这些相关。<br>所以为了跨平台，那么就需要屏蔽这些差异，其实这些实现都是在JVM中。</p>
+<p>现实native的方法的一般步骤是：</p>
+<ul>
+<li>在Java中声明native()方法，然后编译；</li>
+<li>用javah产生一个.h文件；</li>
+<li>写一个.cpp文件实现native导出方法，其中需要包含第二步产生的.h文件（注意其中又包含了JDK带的jni.h文件）；</li>
+<li>将第三步的.cpp文件编译成动态链接库文件；</li>
+<li>在Java中用System.loadLibrary()方法加载第四步产生的动态链接库文件，这个native()方法就可以在Java中被访问了。<br>写了demo代码 <a href="https://github.com/anancds/learn-project/tree/master/jni-learn/src/main/java/com/cds/jni" target="_blank" rel="external">jni</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/11/20/JDK1-Object/" data-id="civq0tj2700016vonk41w2yvh" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-openblas" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/20/openblas/" class="article-date">
+  <time datetime="2016-11-20T02:24:00.000Z" itemprop="datePublished">2016-11-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css"><h1 id="openblas库安装"><a href="#openblas库安装" class="headerlink" title="openblas库安装"></a>openblas库安装</h1><p>直接用openblas库编译</p>
+<p>git clone <a href="https://github.com/xianyi/OpenBLAS.git" target="_blank" rel="external">https://github.com/xianyi/OpenBLAS.git</a><br>make clen<br>make -j4<br>make intall PREFIX=/root/openblas-install<br>ln -sf /root/openblas-install/lib/libopenblas.so  /usr/lib64/libblas.so<br>ln -sf /root/openblas-install/lib/libopenblas.so  /usr/lib64/libblas.so.3<br>ln -sf /root/openblas-install/lib/libopenblas.so  /usr/lib64/liblapack.so.3</p>
+<p>spark编译命令：</p>
+<p>dev/make-distribution.sh –name blas –tgz -Pyarn -Phadoop-2.4 -Dhadoop.version=2.5.2 -Pnetlib-lgpl</p>
+<p>参考资料：</p>
+<p><a href="https://github.com/amplab/ml-matrix" target="_blank" rel="external">https://github.com/amplab/ml-matrix</a><br><a href="https://github.com/shivaram/matrix-bench" target="_blank" rel="external">https://github.com/shivaram/matrix-bench</a><br><a href="http://stackoverflow.com/questions/37848216/how-to-configure-high-performance-blas-lapack-for-breeze-on-amazon-emr-ec2" target="_blank" rel="external">http://stackoverflow.com/questions/37848216/how-to-configure-high-performance-blas-lapack-for-breeze-on-amazon-emr-ec2</a><br><a href="https://www.cloudera.com/documentation/enterprise/5-7-x/topics/spark_mllib.html#concept_arw_q2j_h5" target="_blank" rel="external">https://www.cloudera.com/documentation/enterprise/5-7-x/topics/spark_mllib.html#concept_arw_q2j_h5</a><br><a href="http://www.spark.tc/blas-libraries-in-mllib/" target="_blank" rel="external">http://www.spark.tc/blas-libraries-in-mllib/</a></p>
+<p>验证方式：</p>
+<p>bin/run-example mllib.MovieLensALS –rank 5 –numIterations 5 –lambda 1.0 –kryo /home/sample_movielens_data.txt</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/11/20/openblas/" data-id="civq0tj2s000b6vonhb22hugw" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-shell" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/20/shell/" class="article-date">
+  <time datetime="2016-11-20T02:23:29.000Z" itemprop="datePublished">2016-11-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css"><h1 id="shell脚本编程规范"><a href="#shell脚本编程规范" class="headerlink" title="shell脚本编程规范"></a>shell脚本编程规范</h1><p>当然最好的规范还是<a href="https://google.github.io/styleguide/shell.xml" target="_blank" rel="external">google Shell Style Guide</a><br>关于shell脚本的课程的话就是：<a href="http://www.cs.cornell.edu/courses/CS2043/2014sp/" target="_blank" rel="external">Unix Tools &amp; Scripting</a></p>
+<h2 id="关于调试"><a href="#关于调试" class="headerlink" title="关于调试"></a>关于调试</h2><ul>
+<li>sh -x 可以调试</li>
+<li>ls 1&gt;/dev/null 2&gt;&amp;1不利于调试，可以改成：&gt;/dev/null 2&gt;log</li>
+<li><p>ls 2&gt;&amp;1 | tee log</p>
+<h2 id="分隔长行"><a href="#分隔长行" class="headerlink" title="分隔长行"></a>分隔长行</h2><p>  activate some_very_long_option \</p>
+<pre><code>some_other_option
+</code></pre></li>
+</ul>
+<h2 id="分离复合命令"><a href="#分离复合命令" class="headerlink" title="分离复合命令"></a>分离复合命令</h2><p>其实这里的复合命令就是指块语句，例如for/while循环, if分支结构等等。</p>
+<pre><code>HEAD_KEYWORD parameters; BODY_BEGIN
+  BODY_COMMANDS
+BODY_END
+</code></pre><h3 id="if-then-elif-else分支语句"><a href="#if-then-elif-else分支语句" class="headerlink" title="if/then/elif/else分支语句"></a>if/then/elif/else分支语句</h3><pre><code>if ...; then
+  ...
+elif ...; then
+  ...
+else
+  ...
+fi
+</code></pre><h3 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h3><pre><code>for f in /etc/*; do
+  ...
+done
+</code></pre><h3 id="while-until循环"><a href="#while-until循环" class="headerlink" title="while/until循环"></a>while/until循环</h3><pre><code>while [[ $answer != [YyNn] ]]; do
+  ...
+done
+</code></pre><h3 id="case分支语句"><a href="#case分支语句" class="headerlink" title="case分支语句"></a>case分支语句</h3><pre><code>case $input in
+  hello)
+    echo &quot;You said hello&quot;
+  ;;
+  bye)
+    echo &quot;You said bye&quot;
+    if foo; then
+      bar
+    fi
+  ;;
+  *)
+    echo &quot;You said something weird...&quot;
+  ;;
+esac
+</code></pre><p>几点注意的地方：</p>
+<ul>
+<li>如果不是100%需要，匹配部分左右的括号不需要写(例如写成hello)而不是(hello))</li>
+<li>匹配模式与分支的终止符号;;位于同一缩进级别</li>
+<li>分支内部的命令多缩进一层</li>
+<li>尽管是可选的，这里还是把最后一个分支的终止符号也写上了</li>
+</ul>
+<h2 id="语法和编码指引"><a href="#语法和编码指引" class="headerlink" title="语法和编码指引"></a>语法和编码指引</h2><h3 id="晦涩的语法结构"><a href="#晦涩的语法结构" class="headerlink" title="晦涩的语法结构"></a>晦涩的语法结构</h3><p>我们都喜欢一些晦涩的语法结构，因为它们很简洁。但是如果不是100%需要用到，尽量不要使用它们，否则大多数人无法理解你的代码。<br>所以有有时候，我们需要在代码的智能，效率与可读性之间找到一个平衡点。<br>如果你一定要使用这种语法结构，记得在用的地方写上一小段注释。</p>
+<h3 id="变量名"><a href="#变量名" class="headerlink" title="变量名"></a>变量名</h3><p>因为所有保留的变量名都是大写的，最安全的方法是仅使用小写字母作为变量名，例如读入用户的输入、循环变量等等……</p>
+<ul>
+<li>变量名尽量选择小写字母</li>
+<li>如果你使用大写的变量名，不要使用保留的变量名(一份不完全的列表参见SUS)</li>
+<li>常量还是用大写字母，多个单词用下划线分隔</li>
+</ul>
+<h3 id="变量初始化"><a href="#变量初始化" class="headerlink" title="变量初始化"></a>变量初始化</h3><p>正如C语言一样，最好的处理是在变量声明的时候初始化。<br>用户可以将一个变量以环境变量的形式传递到脚本中。如果你盲目地假定你使用的所有变量都是未初始化的，其它人可以以环境变量的形式劫持一个变量。</p>
+<pre><code>$ cat b.sh
+
+if [ -z &quot;$var&quot; ]; then
+    echo &quot;$var is not set&quot;
+    var=1
+fi
+
+echo &quot;Now, var is equals to $var&quot;
+var=2 sh b.sh
+Now, var is equals to 2
+</code></pre><p>解决这个问题的方法很简单，将变量初始化：</p>
+<pre><code>my_input=&quot;&quot;
+my_array=()
+my_number=0
+</code></pre><h3 id="参数展开"><a href="#参数展开" class="headerlink" title="参数展开"></a>参数展开</h3><p>除非你知道自己做的事情，请在参数展开的地方使用双引号</p>
+<p>当然，也有一些地方并不需要使用双引号，例如：</p>
+<p>*[[ ]]测试表达式内部是不会展开的</p>
+<ul>
+<li>在case $WORD in语法中WORD也不会展开的</li>
+<li>在变量赋值var=$WORD的地方也是不会展开的</li>
+</ul>
+<p>是在这些地方使用引号并不会出错，如果你习惯于在每个可能展开参数的地方使用引号，你写得代码会很安全。</p>
+<p>如果你要传递一个参数作为一个单词列表，你可以不使用引号，例如：</p>
+<pre><code>list=&quot;one two three&quot;
+
+# you MUST NOT quote $list here
+for word in $list; do
+  ...
+done
+</code></pre><h3 id="函数名称"><a href="#函数名称" class="headerlink" title="函数名称"></a>函数名称</h3><p>首字母小写的驼峰，与java的方法一样。</p>
+<h3 id="命令替换"><a href="#命令替换" class="headerlink" title="命令替换"></a>命令替换</h3><p>正如文章<a href="http://wiki.bash-hackers.org/syntax/expansion/cmdsubst" target="_blank" rel="external">the article about command substitution [Bash Hackers Wiki]</a>中提及的，你应该使用$( .. )形式。<br>不过，如果可移植性是一个问题，你可能必须使用反引号的形式<code>...</code>。<br>在任何情况，如果其它展开或者单词分隔并不是你期望的，你应该将命令替换用双引号引起来。</p>
+<h3 id="Eval命令"><a href="#Eval命令" class="headerlink" title="Eval命令"></a>Eval命令</h3><p>正如Greg据说的：“If eval is the answer, surely you are asking the wrong question.”。<br>避免它，除非绝对必要：</p>
+<ul>
+<li>eval can be your neckshot(可能是你的麻烦？)</li>
+<li>很有可能有其它的方法来实现你需要的</li>
+<li>如果可能，重新思考下脚本的工作过程，当eval的使用不可避免的时候</li>
+<li>如果你实在需要使用，小心慎用</li>
+</ul>
+<h2 id="脚本基本结构"><a href="#脚本基本结构" class="headerlink" title="脚本基本结构"></a>脚本基本结构</h2><p>一个脚本的基本结构是这样的：</p>
+<pre><code>#!SHEBANG
+
+CONFIGURATION_VARIABLES
+
+FUNCTION_DEFINITIONS
+
+MAIN_CODE
+</code></pre><h3 id="Shebang"><a href="#Shebang" class="headerlink" title="Shebang"></a>Shebang</h3><p>如果可能，请不要忘记shebang。<br>请小心使用/bin/sh作为shebang，在Linux系统中，/bin/sh就是Bash这是一个错误的观点。<br>于我而言，shebang有两个目的：</p>
+<ul>
+<li>说明直接执行时以哪个解释器来执行</li>
+<li>明确该脚本应该以哪个解释器来执行</li>
+</ul>
+<h3 id="配置变量"><a href="#配置变量" class="headerlink" title="配置变量"></a>配置变量</h3><p>在这里，我将这一类变量——可以被用户更改的——叫做配置变量。<br>让这类变量容易找到，一般放在脚本的头部，给它们有意义的名称并且加上注释说明。正如上面说的，仅当你知道你为什么这么做的时候，才用大写的变量名形式，否则小写形式更加安全。</p>
+<h3 id="函数定义"><a href="#函数定义" class="headerlink" title="函数定义"></a>函数定义</h3><p>所有函数定义应该在脚本主要代码执行之前，这样可以给人全局的印象，并且确保所有函数在使用之前它是已知的。<br>你应该使用可移植性高的函数定义形式，即不带function关键字的形式。</p>
+<h2 id="脚本行为和健壮性"><a href="#脚本行为和健壮性" class="headerlink" title="脚本行为和健壮性"></a>脚本行为和健壮性</h2><ul>
+<li>当脚本检测到问题时尽早退出，以免执行潜在的问题</li>
+<li>如果你需要用到的命令可能并没有安装在系统上，在脚本执行的时候最好检查命令是否存在并且提醒用户缺少什么</li>
+<li>采用有意义的脚本返回值，例如0代码成功，1代码错误或者失败</li>
+</ul>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="输出内容"><a href="#输出内容" class="headerlink" title="输出内容"></a>输出内容</h3><ul>
+<li>如果脚本是交互是的，你可以将终端的内容在执行后保存下来</li>
+<li>在屏幕中输出简单易理解的消息</li>
+<li>使用颜色或者特别的前缀区分错误和警告信息</li>
+<li>输出正常的内容到STDOUT，而输出错误、警告或者诊断的信息到STDERR</li>
+<li>在日志文件中输出所有详细的信息</li>
+</ul>
+<h3 id="输入"><a href="#输入" class="headerlink" title="输入"></a>输入</h3><p>不要盲目地假设任何事情，如果你希望用户输入一个数字，请在脚本中主动检查它是否真得是一个数字，检查头部是否包含0，等等。我们都应该知道这一点，用户仅仅是用户而不是程序员，他们会做他们想要的，而不是程序想要的。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/11/20/shell/" data-id="civq0tj2z000g6von5nijh8p9" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-learn" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/20/learn/" class="article-date">
+  <time datetime="2016-11-20T02:07:38.000Z" itemprop="datePublished">2016-11-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/20/learn/">最近一年的计划</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css"><h2 id="courses"><a href="#courses" class="headerlink" title="courses"></a>courses</h2><ul>
+<li><p><a href="http://www.cs.cornell.edu/courses/CS2043/2014sp/" target="_blank" rel="external">CS 2043 Unix Tools &amp; Scripting Cornell University </a></p>
+</li>
+<li><p><a href="http://www.itu.dk/people/sestoft/itu/PCPP/E2016/" target="_blank" rel="external">PCPP Practical Concurrent and Parallel Programming IT University of Copenhagen</a></p>
+</li>
+<li><p><a href="http://web.stanford.edu/class/cs246/index.html" target="_blank" rel="external">CS246<br>Mining Massive Data Sets<br>Winter 2016</a></p>
+</li>
+<li><p><a href="http://cs168.io/" target="_blank" rel="external">CS 168 Introduction to the Internet: Architecture and Protocols, Fall 2016
+</a></p>
+</li>
+<li><p><a href="https://pdos.csail.mit.edu/6.824/" target="_blank" rel="external">6.824 Distributed Systems MIT</a></p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/11/20/learn/" data-id="civq0tj2r000a6vonkoadizt9" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/courses/">courses</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-class" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/12/class/" class="article-date">
+  <time datetime="2016-11-12T13:41:13.000Z" itemprop="datePublished">2016-11-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/12/class/">understanding java class loaders</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css"><h2 id="Class-overview"><a href="#Class-overview" class="headerlink" title="Class overview"></a>Class overview</h2><p>Java运行时系统一直对所有对对象进行运行时类型标识，这项信息纪录了每个对象所属对类。虚拟机通常使用运行时类 \sum  2^2</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/11/12/class/" data-id="civq0tj2h00066vonyxi3ssfd" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jvm/">jvm</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
   
     <article id="post-volatile" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
@@ -93,7 +977,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/10/15/volatile/" data-id="civf9es5z0005f6onrz13jvs1" class="article-share-link">Partager</a>
+      <a data-url="http://yoursite.com/2016/10/15/volatile/" data-id="civq0tj2v000e6von1yqmdmz3" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
@@ -105,191 +989,18 @@
 
 
   
-    <article id="post-hashmap" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/10/01/hashmap/" class="article-date">
-  <time datetime="2016-10-01T11:42:37.000Z" itemprop="datePublished">2016-10-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/01/hashmap/">hashmap</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css">
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/10/01/hashmap/" data-id="civf9es610006f6onkk42ynn3" class="article-share-link">Partager</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
 
 
-  
-    <article id="post-javaGC" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/09/13/javaGC/" class="article-date">
-  <time datetime="2016-09-13T03:12:59.000Z" itemprop="datePublished">2016-09-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/09/13/javaGC/">GC调优</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="GC调优"><a href="#GC调优" class="headerlink" title="GC调优"></a>GC调优</h1><p>因为应用程序跑在jetty下，所以先说下启动jetty的jvm参数。</p>
-<pre><code>java -XX:+CMSParallelRemarkEnabled -XX:+CMSScavengeBeforeRemark -XX:+ParallelRefProcEnabled -XX:+UseCMSInitiatingOccupancyOnly -XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFraction=50 -XX:CMSMaxAbortablePrecleanTime=6000 -XX:ConcGCThreads=4 -XX:MaxTenuringThreshold=8 -XX:NewRatio=3 -XX:ParallelGCThreads=4 -XX:PretenureSizeThreshold=64m -XX:SurvivorRatio=4 -XX:TargetSurvivorRatio=90 -Xmx75600m -Xms75600m -XX:ParallelGCThreads=4 -XX:+UseParNewGC -XX:+UseCompressedOops -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=8999 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -jar start.jar jetty.http.port=80
-</code></pre>
-        
-          <p class="article-more-link">
-            <a href="/2016/09/13/javaGC/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/09/13/javaGC/" data-id="civf9es5s0001f6onccymqsn0" class="article-share-link">Partager</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-system" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/09/02/system/" class="article-date">
-  <time datetime="2016-09-02T01:32:59.000Z" itemprop="datePublished">2016-09-02</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/09/02/system/">一些系统相关问题的定位</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="系统相关"><a href="#系统相关" class="headerlink" title="系统相关"></a>系统相关</h1><h2 id="I-O性能"><a href="#I-O性能" class="headerlink" title="I/O性能"></a>I/O性能</h2><ul>
-<li><p>查看I/O：</p>
-<pre><code>iostat -xz 1
-</code></pre></li>
-</ul>
-        
-          <p class="article-more-link">
-            <a href="/2016/09/02/system/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/09/02/system/" data-id="civf9es5y0004f6onu3407hpd" class="article-share-link">Partager</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/System/">System</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-GPU-1" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/07/22/GPU-1/" class="article-date">
-  <time datetime="2016-07-22T08:51:59.000Z" itemprop="datePublished">2016-07-22</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/GPU/">GPU</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/07/22/GPU-1/">GPU学习</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>实验环境：<br>系统是Ubuntu，cuda的版本是7.5。</p>
-<p>具体怎么搭建还是参考官方文档<a href="http://docs.nvidia.com/cuda/index.html#axzz4DzlUApap">documents</a></p>
-<h2 id="1、Introduction"><a href="#1、Introduction" class="headerlink" title="1、Introduction"></a>1、Introduction</h2><h3 id="1、1-From-Graphics-Processing-to-General-Purpose-Parallel-Computing"><a href="#1、1-From-Graphics-Processing-to-General-Purpose-Parallel-Computing" class="headerlink" title="1、1 From Graphics Processing to General Purpose Parallel Computing"></a>1、1 From Graphics Processing to General Purpose Parallel Computing</h3><p>由于市场对实时性、3D高清图像的无限制需求的驱动，可编程的GPU(Graphic Processor Unit)已经发展成为一个高度并行的、多线程、多core的处理器。拥有大计算功率和高网络带宽。如下图所示：</p>
-        
-          <p class="article-more-link">
-            <a href="/2016/07/22/GPU-1/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/07/22/GPU-1/" data-id="civf9es5o0000f6onzq4ssi39" class="article-share-link">Partager</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GPU/">GPU</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-
+  <nav id="page-nav">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">__('next') &raquo;</a>
+  </nav>
 </section>
         
           <aside id="sidebar">
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Catégories</h3>
+    <h3 class="widget-title">Categories</h3>
     <div class="widget">
       <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/GPU/">GPU</a></li></ul>
     </div>
@@ -299,9 +1010,9 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Mot-clés</h3>
+    <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPU/">GPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/GPU/">GPU</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/courses/">courses</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/">java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jvm/">jvm</a></li></ul>
     </div>
   </div>
 
@@ -309,9 +1020,9 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/GPU/" style="font-size: 10px;">GPU</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/java/" style="font-size: 20px;">java</a>
+      <a href="/tags/GPU/" style="font-size: 10px;">GPU</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/courses/" style="font-size: 10px;">courses</a> <a href="/tags/java/" style="font-size: 20px;">java</a> <a href="/tags/jvm/" style="font-size: 10px;">jvm</a>
     </div>
   </div>
 
@@ -320,7 +1031,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li></ul>
     </div>
   </div>
 
@@ -328,28 +1039,28 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Articles récents</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
         
           <li>
-            <a href="/2016/10/15/volatile/">volatile应用场景</a>
+            <a href="/2016/11/20/JDK源码分析8-HashMap/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2016/10/01/hashmap/">hashmap</a>
+            <a href="/2016/11/20/JDK2-Integer/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2016/09/13/javaGC/">GC调优</a>
+            <a href="/2016/11/20/JDK6-Observer/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2016/09/02/system/">一些系统相关问题的定位</a>
+            <a href="/2016/11/20/JDK7-Iterable/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2016/07/22/GPU-1/">GPU学习</a>
+            <a href="/2016/11/20/JDK1-Object/">(no title)</a>
           </li>
         
       </ul>
@@ -365,7 +1076,7 @@
   <div class="outer">
     <div id="footer-info" class="inner">
       &copy; 2016 John Doe<br>
-      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>
@@ -388,6 +1099,23 @@
 
 <script src="/js/script.js"></script>
 
-  </div>
+  </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 </body>
 </html>
