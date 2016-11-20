@@ -3,14 +3,14 @@
 <head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
-  <title>JDK源码分析1-Object | Hexo</title>
+  <title>JDK源码分析1-Object | Ethan</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="源码分析基于JDK1.8
 native 关键字关于这个类没什么可以说的，因为其方法实现并不在这个类中。因为用native修饰的方法的实现其实是用别的语言实现的，一般是用c/c++实现的，实现方法就是JNI(Java native interface)。关于这个可以看看我们主线的salut-SDK模块，就是java来调用底层c实现的方法，c语言只需要提供动态库和头文件即可。用native声明方法无非">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JDK源码分析1-Object">
 <meta property="og:url" content="http://yoursite.com/2016/01/20/JDK1-Object/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="Ethan">
 <meta property="og:description" content="源码分析基于JDK1.8
 native 关键字关于这个类没什么可以说的，因为其方法实现并不在这个类中。因为用native修饰的方法的实现其实是用别的语言实现的，一般是用c/c++实现的，实现方法就是JNI(Java native interface)。关于这个可以看看我们主线的salut-SDK模块，就是java来调用底层c实现的方法，c语言只需要提供动态库和头文件即可。用native声明方法无非">
 <meta property="og:updated_time" content="2016-11-20T02:37:07.000Z">
@@ -19,7 +19,7 @@ native 关键字关于这个类没什么可以说的，因为其方法实现并�
 <meta name="twitter:description" content="源码分析基于JDK1.8
 native 关键字关于这个类没什么可以说的，因为其方法实现并不在这个类中。因为用native修饰的方法的实现其实是用别的语言实现的，一般是用c/c++实现的，实现方法就是JNI(Java native interface)。关于这个可以看看我们主线的salut-SDK模块，就是java来调用底层c实现的方法，c语言只需要提供动态库和头文件即可。用native声明方法无非">
   
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="Ethan" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -40,8 +40,12 @@ native 关键字关于这个类没什么可以说的，因为其方法实现并�
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
+        <a href="/" id="logo">Ethan</a>
       </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">专注于大数据、分布式系统、数据挖掘、机器学习</a>
+        </h2>
       
     </div>
     <div id="header-inner" class="inner">
@@ -102,7 +106,7 @@ native 关键字关于这个类没什么可以说的，因为其方法实现并�
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/01/20/JDK1-Object/" data-id="civq19lv70005e6on53owbnvk" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/01/20/JDK1-Object/" data-id="civq1e0jn0002h1onk8l43dnl" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jdk/">jdk</a></li></ul>
@@ -209,7 +213,7 @@ native 关键字关于这个类没什么可以说的，因为其方法实现并�
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2016 John Doe<br>
+      &copy; 2016 陈东升<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
